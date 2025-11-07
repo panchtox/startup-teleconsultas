@@ -91,7 +91,7 @@ export function AppointmentFormDialog({
       ...formData,
       patientName: selectedPatient.fullName,
       patientPhone: selectedPatient.contact.phone,
-      doctorName: selectedDoctor.name,
+      doctorName: `${selectedDoctor.firstName} ${selectedDoctor.lastName}`,
       specialty: selectedDoctor.specialty,
       endTime,
       reminders: appointment?.reminders || [],
