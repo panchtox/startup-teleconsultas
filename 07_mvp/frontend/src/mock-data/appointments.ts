@@ -163,7 +163,7 @@ function generateAppointment(index: number, isFuture: boolean): Appointment {
     id: `apt-${String(index + 1).padStart(4, '0')}`,
     patientId: patient.id,
     patientName: `${patient.firstName} ${patient.lastName}`,
-    patientPhone: patient.phone,
+    patientPhone: patient.contact.phone,
     doctorId: doctor.id,
     doctorName: `Dr. ${doctor.firstName} ${doctor.lastName}`,
     specialty: doctor.specialty,
