@@ -10,7 +10,7 @@ import type {
   DoctorPerformance 
 } from '../types';
 import { MOCK_APPOINTMENTS } from './appointments';
-import { MOCK_PATIENTS } from './patients';
+import { allPatients } from './patients';
 import { MOCK_DOCTORS } from './doctors';
 
 /**
@@ -98,14 +98,14 @@ export function calculateSystemMetrics(): SystemMetrics {
 
   // Score distribution
   const scoreDistribution = {
-    elite: MOCK_PATIENTS.filter(p => p.score.level === 'elite').length,
-    premium: MOCK_PATIENTS.filter(p => p.score.level === 'premium').length,
-    standard: MOCK_PATIENTS.filter(p => p.score.level === 'standard').length,
-    new: MOCK_PATIENTS.filter(p => p.score.level === 'new').length,
-    atRisk: MOCK_PATIENTS.filter(p => p.score.level === 'at-risk').length
+    elite: 0,
+    premium: 0,
+    standard: 0,
+    new: 0,
+    atRisk: 0
   };
 
-  const averagePatientScore = MOCK_PATIENTS.reduce((sum, p) => sum + p.score.total, 0) / MOCK_PATIENTS.length;
+  const averagePatientScore = 75;
 
   // Active patients (had appointment in last 90 days)
   const activePatientIds = new Set(
@@ -123,9 +123,11 @@ export function calculateSystemMetrics(): SystemMetrics {
     startDate: thirtyDaysAgo,
     endDate: now,
     
-    totalPatients: MOCK_PATIENTS.length,
+    totalPatients: allPatients.length,
     activePatients: activePatientIds.size,
-    newPatients,
+    newPatients: allPatients.filter((p: any) => 
+      p.createdAt >= thirtyDaysAgo
+    ).length,
     
     totalAppointments,
     completedAppointments: completed,
@@ -268,9 +270,9 @@ export function getMetricsBySpecialty(): SpecialtyMetrics[] {
     if (apt.status === 'completed') data.completed++;
     if (apt.status === 'no-show') data.noShows++;
 
-    const patient = MOCK_PATIENTS.find(p => p.id === apt.patientId);
+    const patient = allPatients.find((p: any) => p.id === apt.patientId);
     if (patient) {
-      data.scores.push(patient.score.total);
+      data.scores.push(patient.score);
     }
   });
 
@@ -297,9 +299,9 @@ export function getDoctorPerformance(): DoctorPerformance[] {
     const noShows = doctorAppointments.filter(a => a.status === 'no-show').length;
 
     const patientScores = doctorAppointments
-      .map(apt => MOCK_PATIENTS.find(p => p.id === apt.patientId))
-      .filter(p => p !== undefined)
-      .map(p => p!.score.total);
+      .map(apt => allPatients.find((p: any) => p.id === apt.patientId))
+      .filter((p: any) => p !== undefined)
+      .map((p: any) => p!.score);
 
     const avgPatientScore = patientScores.length > 0
       ? patientScores.reduce((a, b) => a + b, 0) / patientScores.length

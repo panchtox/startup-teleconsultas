@@ -103,7 +103,7 @@ function generateMessage(
     .replace('{{doctor}}', appointment.doctorName)
     .replace('{{fecha}}', appointment.date.toLocaleDateString('es-AR'))
     .replace('{{hora}}', appointment.startTime)
-    .replace('{{obrasocial}}', patient.healthInsurance)
+    .replace('{{obrasocial}}', patient.demographics.healthInsurance || 'tu obra social')
     .replace('{{telefono}}', '+54 11 4000-1234')
     .replace('{{link}}', 'https://clinica.com.ar/consulta');
 
@@ -140,7 +140,7 @@ function generateMessage(
     appointmentId,
     patientId: patient.id,
     patientName: `${patient.firstName} ${patient.lastName}`,
-    patientPhone: patient.phone,
+    patientPhone: patient.contact.phone,
     type,
     content,
     sentAt: sentDate,

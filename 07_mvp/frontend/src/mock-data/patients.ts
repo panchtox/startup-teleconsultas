@@ -15,6 +15,7 @@ import {
   PatientLevel, 
   Badge,
   ConsultationHistoryItem,
+  ConsultationStatus,
   ScoreHistoryPoint,
   PatientStats,
   PatientsOverview
@@ -346,7 +347,7 @@ function generatePatient(index: number): Patient {
   const canceledConsultations = consultationHistory.filter(c => c.status === 'Cancelada').length;
   const totalConsultations = consultationHistory.length;
   
-  const attendanceRate = totalConsultations > 0 
+  const rate = totalConsultations > 0 
     ? Math.round((attendedConsultations / totalConsultations) * 100)
     : 0;
   
@@ -368,7 +369,7 @@ function generatePatient(index: number): Patient {
     attendedConsultations,
     missedConsultations,
     canceledConsultations,
-    attendanceRate,
+    attendanceRate: rate,
     avgResponseTime: randomNumber(30, 180),
     consecutiveAttendances,
     consecutiveMisses,

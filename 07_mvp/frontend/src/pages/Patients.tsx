@@ -23,7 +23,7 @@ import {
 
 export function Patients() {
   const navigate = useNavigate();
-  const [showNewPatientModal, setShowNewPatientModal] = useState(false);
+  // const [showNewPatientModal, setShowNewPatientModal] = useState(false);
   
   // Handlers
   const handleViewProfile = (patientId: string) => {
@@ -41,8 +41,9 @@ export function Patients() {
   };
   
   const handleNewPatient = () => {
-    setShowNewPatientModal(true);
+    // setShowNewPatientModal(true);
     // TODO: Implementar modal de nuevo paciente
+    console.log('TODO: Modal nuevo paciente');
   };
   
   return (
