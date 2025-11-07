@@ -3,6 +3,7 @@ import { DashboardLayout } from '@/components/layout'
 import DashboardPage from '@/pages/Dashboard'
 import PatientsPage from '@/pages/Patients'
 import PatientProfilePage from '@/pages/PatientProfile'
+import { Appointments } from '@/pages/Appointments'
 
 // Placeholder para otras páginas
 function Placeholder({ title }: { title: string }) {
@@ -21,7 +22,7 @@ function App() {
         <Route path="/" element={<DashboardPage />} />
         <Route path="/patients" element={<PatientsPage />} />
         <Route path="/patients/:id" element={<PatientProfilePage />} />
-        <Route path="/appointments" element={<Placeholder title="Consultas" />} />
+        <Route path="/appointments" element={<Appointments />} />
         <Route path="/reputation" element={<Placeholder title="Sistema de Reputación" />} />
         <Route path="/messages" element={<Placeholder title="Mensajes" />} />
         <Route path="/reports" element={<Placeholder title="Reportes" />} />
