@@ -27,19 +27,21 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { ScoreBadgeCompact } from './ScoreBadge';
 import { Patient, PatientLevel } from '@/types/patient';
-import { 
-  Search, 
-  Filter, 
-  ChevronLeft, 
-  ChevronRight,
-  Eye,
-  MessageSquare,
-  Calendar,
-  AlertCircle,
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown
+import {
+Search, 
+Filter, 
+ChevronLeft, 
+ChevronRight,
+Eye,
+MessageSquare,
+Calendar,
+AlertCircle,
+ArrowUpDown,
+ArrowUp,
+ArrowDown,
+  Download
 } from 'lucide-react';
+import { exportPatientsToCSV } from '@/utils/export';
 
 interface PatientsTableProps {
   patients: Patient[];
@@ -191,21 +193,34 @@ export function PatientsTable({
           />
         </div>
         
-        {/* Botón de filtros */}
-        <Button
-          variant={showFilters ? "default" : "outline"}
-          size="sm"
-          onClick={() => setShowFilters(!showFilters)}
-          className="w-full md:w-auto"
-        >
-          <Filter className="h-4 w-4 mr-2" />
-          Filtros
-          {selectedLevels.length > 0 && (
-            <Badge variant="secondary" className="ml-2">
-              {selectedLevels.length}
-            </Badge>
-          )}
-        </Button>
+        {/* Botones */}
+        <div className="flex gap-2 w-full md:w-auto">
+          <Button
+            variant={showFilters ? "default" : "outline"}
+            size="sm"
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex-1 md:flex-initial"
+          >
+            <Filter className="h-4 w-4 mr-2" />
+            Filtros
+            {selectedLevels.length > 0 && (
+              <Badge variant="secondary" className="ml-2">
+                {selectedLevels.length}
+              </Badge>
+            )}
+          </Button>
+          
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => exportPatientsToCSV(sortedPatients, 'pacientes_conectasalud')}
+            className="flex-1 md:flex-initial"
+            title="Exportar a CSV"
+          >
+            <Download className="h-4 w-4 md:mr-2" />
+            <span className="hidden md:inline">Exportar</span>
+          </Button>
+        </div>
       </div>
       
       {/* Panel de filtros */}

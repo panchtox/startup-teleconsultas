@@ -36,7 +36,9 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4",
-    "zustand": "^4.5.2"
+    "zustand": "^4.5.2",
+    "react-hot-toast": "^2.4.1",
+    "framer-motion": "^11.0.8"
   },
   "devDependencies": {
     "@types/react": "^18.3.1",

@@ -14,9 +14,10 @@ export default function PatientProfile() {
   // Buscar paciente por ID
   const patient = allPatients.find(p => p.id === id)
 
+  // Loading state o paciente no encontrado
   if (!patient) {
     return (
-      <div className="p-6">
+      <div className="p-4 md:p-6">
         <div className="flex items-center gap-4 mb-6">
           <Button variant="ghost" onClick={() => navigate('/patients')}>
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -24,40 +25,44 @@ export default function PatientProfile() {
           </Button>
         </div>
         <Card className="p-6">
-          <p className="text-gray-600">Paciente no encontrado</p>
+          <p className="text-gray-600">Paciente no encontrado (ID: {id})</p>
+          <Button variant="outline" className="mt-4" onClick={() => navigate('/patients')}>
+            Volver a la lista
+          </Button>
         </Card>
       </div>
     )
   }
 
-  const levelName = getLevelByScore(patient.score)
-  const level = getLevelConfig(levelName)
+  // Asegurar que tenemos el nivel
+  const level = patient.level || getLevelByScore(patient.score)
+  const levelConfig = getLevelConfig(level)
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 md:p-6 space-y-4 md:space-y-6">
       {/* Header con navegación */}
-      <div className="flex items-center justify-between">
-        <Button variant="ghost" onClick={() => navigate('/patients')}>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <Button variant="ghost" onClick={() => navigate('/patients')} className="w-fit">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Volver a Pacientes
         </Button>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">
-            <Phone className="h-4 w-4 mr-2" />
-            Contactar
+          <Button variant="outline" size="sm" className="flex-1 sm:flex-initial">
+            <Phone className="h-4 w-4 sm:mr-2" />
+            <span className="hidden sm:inline">Contactar</span>
           </Button>
-          <Button size="sm">
-            <Calendar className="h-4 w-4 mr-2" />
-            Programar Consulta
+          <Button size="sm" className="flex-1 sm:flex-initial">
+            <Calendar className="h-4 w-4 sm:mr-2" />
+            <span className="hidden sm:inline">Programar Consulta</span>
           </Button>
         </div>
       </div>
 
       {/* Perfil Header */}
-      <Card className="p-6">
-        <div className="flex items-start gap-6">
+      <Card className="p-4 md:p-6">
+        <div className="flex flex-col sm:flex-row items-start gap-4 md:gap-6">
           {/* Avatar */}
-          <div className="h-24 w-24 rounded-full bg-primary-100 flex items-center justify-center text-3xl font-bold text-primary-600">
+          <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-primary-100 flex items-center justify-center text-2xl sm:text-3xl font-bold text-primary-600">
             {patient.firstName.charAt(0)}{patient.lastName.charAt(0)}
           </div>
 
@@ -65,14 +70,14 @@ export default function PatientProfile() {
           <div className="flex-1">
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
                   {patient.firstName} {patient.lastName}
                 </h1>
                 <p className="text-gray-500 mt-1">
                   {patient.demographics.identificationType}: {patient.demographics.identificationNumber} • {patient.demographics.age} años
                 </p>
               </div>
-              <ScoreBadge score={patient.score} variant="large" />
+              <ScoreBadge score={patient.score} level={level} size="lg" showProgress />
             </div>
 
             <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -98,10 +103,10 @@ export default function PatientProfile() {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-semibold text-gray-900">
-                Nivel {level.name}
+                Nivel {level}
               </h3>
               <p className="text-sm text-gray-600 mt-1">
-                {level.description}
+                {levelConfig.description}
               </p>
             </div>
             <div className="text-right">
