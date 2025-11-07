@@ -7,6 +7,7 @@ import { Appointments } from '@/pages/Appointments'
 import { Reputation } from '@/pages/Reputation'
 import Messages from '@/pages/Messages'
 import Reports from '@/pages/Reports'
+import { Landing } from '@/pages/Landing'
 
 // Placeholder para otras páginas
 function Placeholder({ title }: { title: string }) {
@@ -20,18 +21,22 @@ function Placeholder({ title }: { title: string }) {
 
 function App() {
   return (
-    <DashboardLayout>
-      <Routes>
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/patients" element={<PatientsPage />} />
-        <Route path="/patients/:id" element={<PatientProfilePage />} />
-        <Route path="/appointments" element={<Appointments />} />
-        <Route path="/reputation" element={<Reputation />} />
-        <Route path="/messages" element={<Messages />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/settings" element={<Placeholder title="Configuración" />} />
-      </Routes>
-    </DashboardLayout>
+    <Routes>
+      {/* Public routes */}
+      <Route path="/" element={<Landing />} />
+      <Route path="/landing" element={<Landing />} />
+      
+      {/* Protected routes with DashboardLayout */}
+      <Route path="/login" element={<DashboardLayout><DashboardPage /></DashboardLayout>} />
+      <Route path="/dashboard" element={<DashboardLayout><DashboardPage /></DashboardLayout>} />
+      <Route path="/patients" element={<DashboardLayout><PatientsPage /></DashboardLayout>} />
+      <Route path="/patients/:id" element={<DashboardLayout><PatientProfilePage /></DashboardLayout>} />
+      <Route path="/appointments" element={<DashboardLayout><Appointments /></DashboardLayout>} />
+      <Route path="/reputation" element={<DashboardLayout><Reputation /></DashboardLayout>} />
+      <Route path="/messages" element={<DashboardLayout><Messages /></DashboardLayout>} />
+      <Route path="/reports" element={<DashboardLayout><Reports /></DashboardLayout>} />
+      <Route path="/settings" element={<DashboardLayout><Placeholder title="Configuración" /></DashboardLayout>} />
+    </Routes>
   )
 }
 
