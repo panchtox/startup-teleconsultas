@@ -12,6 +12,7 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     description: 'Completaste tu primera teleconsulta',
     icon: '🎯',
     category: 'especial' as BadgeCategory,
+    rarity: 'común' as const,
     requirement: 'Completar 1 consulta'
   },
   {
@@ -20,6 +21,7 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     description: 'Asististe a todas tus consultas del mes',
     icon: '⭐',
     category: 'asistencia' as BadgeCategory,
+    rarity: 'raro' as const,
     requirement: 'Asistir a todas las consultas en un mes'
   },
   {
@@ -46,6 +48,7 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     description: 'Un año de asistencia perfecta',
     icon: '🏆',
     category: 'especial' as BadgeCategory,
+    rarity: 'legendario' as const,
     requirement: 'Asistir a todas las consultas durante 1 año'
   },
   
@@ -77,7 +80,6 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     icon: '⚡',
     category: 'engagement',
     rarity: 'común' as const,
-    rarity: 'común' as const,
     requirement: 'Responder 10 recordatorios en <1 hora'
   },
   {
@@ -95,6 +97,7 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     description: 'Dejaste feedback en 5 consultas',
     icon: '💬',
     category: 'engagement',
+    rarity: 'común' as const,
     requirement: 'Completar encuesta en 5 consultas'
   },
   

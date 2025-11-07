@@ -188,7 +188,6 @@ export function generateAbsenteeismTrend(): AbsenteeismTrend[] {
     // Simulate improvement over time
     const improvementFactor = (5 - i) * 0.05; // 0% to 25% improvement
     const adjustedNoShowRate = Math.max(9, noShowRate * (1 - improvementFactor));
-    const adjustedAttendanceRate = 100 - adjustedNoShowRate;
 
     trends.push({
       period: monthStart.toLocaleDateString('es-AR', { month: 'short', year: 'numeric' }),

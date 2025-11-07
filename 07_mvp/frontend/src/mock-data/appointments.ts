@@ -3,7 +3,7 @@
  */
 
 import type { Appointment, AppointmentStatus, AppointmentType } from '../types';
-import { MOCK_PATIENTS, getRandomPatient } from './patients';
+import { allPatients } from './patients';
 import { MOCK_DOCTORS, getRandomDoctor } from './doctors';
 
 const CONSULTATION_REASONS = [
