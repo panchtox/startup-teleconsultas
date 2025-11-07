@@ -94,12 +94,14 @@ src/
 - Badges y logros
 - Exportación a CSV/Excel
 
-### 🚧 Gestión de Consultas (60%)
-- Vista lista de consultas
-- Calendario semanal funcional
-- Formulario crear/editar consulta
-- Navegación entre vistas
-- (Pendiente: Vista diaria, mensual, filtros)
+### ✅ Gestión de Consultas (100%)
+- Vista lista completa de consultas
+- Calendario semanal totalmente funcional
+- Formulario crear/editar consulta completo
+- Navegación entre vistas (lista/calendario)
+- Filtros por estado con badges
+- Estadísticas (Total, Hoy, Semana, Mes)
+- 400 consultas mock con datos reales
 
 ### ⏸️ Próximos Módulos
 - Sistema de Reputación
@@ -240,23 +242,36 @@ npm run type-check
 
 **Última actualización:** 07/11/2025
 
-**Progreso:** 60% del MVP completado
+**Progreso:** 57% del MVP completado
 
 - ✅ Sprint 1: Setup y Fundación (100%)
 - ✅ Sprint 2: Dashboard (100%)
 - ✅ Sprint 3: Gestión de Pacientes (100%)
-- 🚧 Sprint 4: Gestión de Consultas (60%)
+- ✅ Sprint 4: Gestión de Consultas (100%) **← BUILD SUCCESS ✅**
 - ⏸️ Sprint 5-7: Pendientes
 
-Ver `docs/PROJECT_STATUS.md` para detalles completos.
+**Build Status:** ✅ SIN ERRORES TypeScript  
+Ver `docs/PROJECT_STATUS.md` y `docs/sprint4_progress.md` para detalles completos.
 
 ## 📝 Próximos Pasos
 
-1. Completar vistas de calendario (Diario y Mensual)
-2. Implementar panel de filtros avanzado
-3. Vista detalle completa de consulta
-4. Acciones sobre consultas (Confirmar, Cancelar, etc.)
-5. Sistema de Reputación (Sprint 5)
+1. **Sprint 5:** Sistema de Reputación Visual
+   - Explicación de niveles
+   - Ranking de pacientes
+   - Catálogo de badges
+   - Simulaciones interactivas
+
+2. **Sprint 6:** Comunicaciones y Reportes
+   - Log de mensajes WhatsApp
+   - Templates de recordatorios
+   - Dashboard de ROI
+   - Exportación PDF/Excel
+
+3. **Sprint 7:** Landing Page Pública
+   - Hero + Features
+   - Testimonios
+   - Pricing
+   - Demo request form
 
 ## 👥 Equipo
 

@@ -58,7 +58,7 @@ export function AppointmentFormDialog({
   });
 
   const [selectedPatient, setSelectedPatient] = useState<typeof allPatients[0] | null>(null);
-  const [selectedDoctor, setSelectedDoctor] = useState<typeof mockDoctors[0] | null>(null);
+  const [selectedDoctor, setSelectedDoctor] = useState<typeof MOCK_DOCTORS[0] | null>(null);
 
   useEffect(() => {
     if (appointment) {
@@ -90,7 +90,7 @@ export function AppointmentFormDialog({
     const appointmentData: Partial<Appointment> = {
       ...formData,
       patientName: selectedPatient.fullName,
-      patientPhone: selectedPatient.phone,
+      patientPhone: selectedPatient.contact.phone,
       doctorName: selectedDoctor.name,
       specialty: selectedDoctor.specialty,
       endTime,

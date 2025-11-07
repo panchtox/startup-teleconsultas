@@ -2,12 +2,12 @@ import { useState, useMemo } from 'react';
 import { Calendar, List, Plus, Filter, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { MOCK_APPOINTMENTS } from '@/mock-data/appointments';
 import type { Appointment, AppointmentFilters, AppointmentStatus } from '@/types/appointment';
 import { WeekCalendar, AppointmentFormDialog } from '@/components/appointments';
-import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, isSameDay } from 'date-fns';
+import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 type ViewMode = 'calendar' | 'list';
@@ -17,7 +17,7 @@ export function Appointments() {
   const [viewMode, setViewMode] = useState<ViewMode>('calendar');
   const [calendarView, setCalendarView] = useState<CalendarView>('week');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [filters, setFilters] = useState<AppointmentFilters>({});
+  const [filters] = useState<AppointmentFilters>({});
   const [showFilters, setShowFilters] = useState(false);
   const [showAppointmentDialog, setShowAppointmentDialog] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);

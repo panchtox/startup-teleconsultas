@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
-import { format, addDays, startOfWeek, isSameDay, isToday } from 'date-fns';
+import { format, addDays, startOfWeek, isToday } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Appointment } from '@/types/appointment';
