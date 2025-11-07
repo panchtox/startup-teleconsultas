@@ -4,6 +4,7 @@ import DashboardPage from '@/pages/Dashboard'
 import PatientsPage from '@/pages/Patients'
 import PatientProfilePage from '@/pages/PatientProfile'
 import { Appointments } from '@/pages/Appointments'
+import { Reputation } from '@/pages/Reputation'
 
 // Placeholder para otras páginas
 function Placeholder({ title }: { title: string }) {
@@ -23,7 +24,7 @@ function App() {
         <Route path="/patients" element={<PatientsPage />} />
         <Route path="/patients/:id" element={<PatientProfilePage />} />
         <Route path="/appointments" element={<Appointments />} />
-        <Route path="/reputation" element={<Placeholder title="Sistema de Reputación" />} />
+        <Route path="/reputation" element={<Reputation />} />
         <Route path="/messages" element={<Placeholder title="Mensajes" />} />
         <Route path="/reports" element={<Placeholder title="Reportes" />} />
         <Route path="/settings" element={<Placeholder title="Configuración" />} />
