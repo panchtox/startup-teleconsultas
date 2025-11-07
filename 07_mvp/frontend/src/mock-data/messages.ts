@@ -1,14 +1,10 @@
-/**
- * Mock WhatsApp messages data
- */
-
-export interface WhatsAppMessage {
+export interface Message {
   id: string;
-  appointmentId: string;
   patientId: string;
   patientName: string;
-  patientPhone: string;
-  type: 'reminder-48h' | 'reminder-24h' | 'reminder-2h' | 'confirmation' | 'cancellation' | 'follow-up';
+  appointmentId: string;
+  type: 'reminder' | 'confirmation' | 'followup' | 'cancellation';
+  template: string;
   content: string;
   sentAt: Date;
   deliveredAt?: Date;
@@ -18,220 +14,165 @@ export interface WhatsAppMessage {
   status: 'sent' | 'delivered' | 'read' | 'responded' | 'failed';
 }
 
-export interface MessageTemplate {
-  id: string;
-  name: string;
-  type: WhatsAppMessage['type'];
-  content: string;
-  variables: string[];
-  active: boolean;
+export interface MessageStats {
+  total: number;
+  sent: number;
+  delivered: number;
+  read: number;
+  responded: number;
+  failed: number;
+  deliveryRate: number;
+  readRate: number;
+  responseRate: number;
 }
 
-export const MESSAGE_TEMPLATES: MessageTemplate[] = [
-  {
-    id: 'reminder-48h',
-    name: 'Recordatorio 48 horas',
-    type: 'reminder-48h',
-    content: '🏥 Hola {{nombre}}! Te recordamos tu teleconsulta con {{doctor}} el {{fecha}} a las {{hora}}. Por favor confirmá tu asistencia respondiendo SÍ. Si necesitás reprogramar, respondé NO.',
-    variables: ['nombre', 'doctor', 'fecha', 'hora'],
-    active: true
-  },
-  {
-    id: 'reminder-24h',
-    name: 'Recordatorio 24 horas',
-    type: 'reminder-24h',
-    content: '⏰ {{nombre}}, tu consulta con {{doctor}} es mañana {{fecha}} a las {{hora}}. Recordá tener tu DNI y credencial de {{obrasocial}} a mano. ¿Confirmás tu asistencia?',
-    variables: ['nombre', 'doctor', 'fecha', 'hora', 'obrasocial'],
-    active: true
-  },
-  {
-    id: 'reminder-2h',
-    name: 'Recordatorio 2 horas',
-    type: 'reminder-2h',
-    content: '🔔 {{nombre}}, tu teleconsulta con {{doctor}} comienza en 2 horas ({{hora}}). El link de acceso: {{link}}. ¡Te esperamos!',
-    variables: ['nombre', 'doctor', 'hora', 'link'],
-    active: true
-  },
-  {
-    id: 'confirmation',
-    name: 'Confirmación recibida',
-    type: 'confirmation',
-    content: '✅ ¡Perfecto {{nombre}}! Tu asistencia está confirmada para el {{fecha}} a las {{hora}}. Nos vemos pronto.',
-    variables: ['nombre', 'fecha', 'hora'],
-    active: true
-  },
-  {
-    id: 'cancellation',
-    name: 'Cancelación notificada',
-    type: 'cancellation',
-    content: '❌ {{nombre}}, registramos la cancelación de tu consulta del {{fecha}}. Podés reprogramar llamando al {{telefono}} o desde nuestra app.',
-    variables: ['nombre', 'fecha', 'telefono'],
-    active: true
-  },
-  {
-    id: 'follow-up',
-    name: 'Seguimiento post-consulta',
-    type: 'follow-up',
-    content: '💚 Hola {{nombre}}! ¿Cómo te sentís después de la consulta con {{doctor}}? Tu opinión es importante para nosotros. Calificá tu experiencia: {{link}}',
-    variables: ['nombre', 'doctor', 'link'],
-    active: true
-  }
-];
+const templates = {
+  reminder: [
+    'Hola {name}, te recordamos tu consulta de {specialty} el {date} a las {time}. ¿Confirmás tu asistencia?',
+    '{name}, tu cita con Dr/a {doctor} está programada para {date} a las {time}. Respondé SÍ para confirmar.',
+    'Recordatorio: Consulta de {specialty} el {date} a las {time}. Por favor confirmá tu asistencia.'
+  ],
+  confirmation: [
+    '¡Perfecto {name}! Tu consulta del {date} a las {time} está confirmada.',
+    'Gracias por confirmar. Te esperamos el {date} a las {time}.',
+    'Confirmado ✓ Nos vemos el {date} a las {time}.'
+  ],
+  followup: [
+    'Hola {name}, notamos que no pudiste asistir a tu consulta. ¿Te gustaría reagendar?',
+    '{name}, ¿todo bien? Queremos ayudarte a reagendar tu consulta de {specialty}.'
+  ],
+  cancellation: [
+    'Hola {name}, tu consulta del {date} ha sido cancelada. Contactanos para reagendar.',
+    '{name}, lamentamos informarte que la consulta del {date} fue cancelada. ¿Querés reagendar?'
+  ]
+};
 
-/**
- * Generate mock WhatsApp messages for the last 30 days
- */
-import { MOCK_APPOINTMENTS, getAppointmentById } from './appointments';
-import { getPatientById } from './patients';
-
-function generateMessage(
-  appointmentId: string,
-  type: WhatsAppMessage['type'],
-  sentDate: Date
-): WhatsAppMessage | null {
-  const appointment = getAppointmentById(appointmentId);
-  if (!appointment) return null;
-
-  const patient = getPatientById(appointment.patientId);
-  if (!patient) return null;
-
-  const template = MESSAGE_TEMPLATES.find(t => t.type === type);
-  if (!template) return null;
-
-  const content = template.content
-    .replace('{{nombre}}', patient.firstName)
-    .replace('{{doctor}}', appointment.doctorName)
-    .replace('{{fecha}}', appointment.date.toLocaleDateString('es-AR'))
-    .replace('{{hora}}', appointment.startTime)
-    .replace('{{obrasocial}}', patient.demographics.healthInsurance || 'tu obra social')
-    .replace('{{telefono}}', '+54 11 4000-1234')
-    .replace('{{link}}', 'https://clinica.com.ar/consulta');
-
-  const delivered = Math.random() > 0.08;
-  const read = delivered && Math.random() > 0.22;
-  const responded = read && Math.random() > 0.35;
-
-  const deliveredAt = delivered 
-    ? new Date(sentDate.getTime() + Math.random() * 60 * 60 * 1000) // within 1 hour
-    : undefined;
-
-  const readAt = read && deliveredAt
-    ? new Date(deliveredAt.getTime() + Math.random() * 3 * 60 * 60 * 1000) // within 3 hours
-    : undefined;
-
-  const respondedAt = responded && readAt
-    ? new Date(readAt.getTime() + Math.random() * 2 * 60 * 60 * 1000) // within 2 hours
-    : undefined;
-
-  const responses = ['SÍ', 'Si', 'Confirmo', 'OK', 'Dale', 'Perfecto', 'Ahí estaré'];
-  const response = responded
-    ? responses[Math.floor(Math.random() * responses.length)]
-    : undefined;
-
-  let status: WhatsAppMessage['status'];
-  if (responded) status = 'responded';
-  else if (read) status = 'read';
-  else if (delivered) status = 'delivered';
-  else if (Math.random() > 0.95) status = 'failed';
-  else status = 'sent';
-
-  return {
-    id: `msg-${appointmentId}-${type}`,
-    appointmentId,
-    patientId: patient.id,
-    patientName: `${patient.firstName} ${patient.lastName}`,
-    patientPhone: patient.contact.phone,
-    type,
-    content,
-    sentAt: sentDate,
-    deliveredAt,
-    readAt,
-    respondedAt,
-    response,
-    status
-  };
-}
-
-export function generateMockMessages(): WhatsAppMessage[] {
-  const messages: WhatsAppMessage[] = [];
+const generateMessages = (): Message[] => {
+  const messages: Message[] = [];
   const now = new Date();
-  const thirtyDaysAgo = new Date(now);
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  
+  const patientNames = [
+    'Juan Pérez', 'María González', 'Carlos Rodríguez', 'Ana Martínez',
+    'Luis Fernández', 'Laura López', 'Diego Sánchez', 'Carolina Romero',
+    'Martín Silva', 'Sofía Torres', 'Pablo Díaz', 'Valentina Castro',
+    'Andrés Morales', 'Camila Ruiz', 'Gabriel Flores', 'Lucía Navarro'
+  ];
 
-  // Get appointments from last 30 days and next 7 days
-  const sevenDaysFromNow = new Date(now);
-  sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
+  const doctors = [
+    'García', 'Fernández', 'López', 'Martínez', 'Rodríguez', 
+    'Sánchez', 'Pérez', 'González', 'Torres', 'Díaz'
+  ];
 
-  const relevantAppointments = MOCK_APPOINTMENTS.filter(apt => 
-    apt.date >= thirtyDaysAgo && apt.date <= sevenDaysFromNow
-  );
+  const specialties = [
+    'Medicina General', 'Cardiología', 'Pediatría', 'Psicología',
+    'Dermatología', 'Traumatología', 'Ginecología', 'Oftalmología'
+  ];
 
-  relevantAppointments.forEach(apt => {
-    const aptDate = new Date(apt.date);
+  // Generate 1200 messages over last 30 days
+  for (let i = 0; i < 1200; i++) {
+    const daysAgo = Math.floor(Math.random() * 30);
+    const sentAt = new Date(now);
+    sentAt.setDate(sentAt.getDate() - daysAgo);
+    sentAt.setHours(Math.floor(Math.random() * 12) + 8);
+    sentAt.setMinutes(Math.floor(Math.random() * 60));
 
-    // 48h reminder
-    const reminder48h = new Date(aptDate);
-    reminder48h.setDate(reminder48h.getDate() - 2);
-    if (reminder48h >= thirtyDaysAgo && reminder48h <= now) {
-      const msg = generateMessage(apt.id, 'reminder-48h', reminder48h);
-      if (msg) messages.push(msg);
-    }
+    const type = ['reminder', 'confirmation', 'followup', 'cancellation'][
+      Math.floor(Math.random() * 4)
+    ] as Message['type'];
 
-    // 24h reminder
-    const reminder24h = new Date(aptDate);
-    reminder24h.setDate(reminder24h.getDate() - 1);
-    if (reminder24h >= thirtyDaysAgo && reminder24h <= now) {
-      const msg = generateMessage(apt.id, 'reminder-24h', reminder24h);
-      if (msg) messages.push(msg);
-    }
+    const patientName = patientNames[Math.floor(Math.random() * patientNames.length)];
+    const doctor = doctors[Math.floor(Math.random() * doctors.length)];
+    const specialty = specialties[Math.floor(Math.random() * specialties.length)];
+    
+    const appointmentDate = new Date(sentAt);
+    appointmentDate.setDate(appointmentDate.getDate() + Math.floor(Math.random() * 7) + 1);
+    
+    const template = templates[type][Math.floor(Math.random() * templates[type].length)];
+    const content = template
+      .replace('{name}', patientName.split(' ')[0])
+      .replace('{doctor}', doctor)
+      .replace('{specialty}', specialty)
+      .replace('{date}', appointmentDate.toLocaleDateString('es-AR'))
+      .replace('{time}', `${appointmentDate.getHours()}:${appointmentDate.getMinutes().toString().padStart(2, '0')}`);
 
-    // 2h reminder (for today's appointments)
-    if (aptDate.toDateString() === now.toDateString()) {
-      const reminder2h = new Date(aptDate);
-      reminder2h.setHours(aptDate.getHours() - 2);
-      if (reminder2h >= thirtyDaysAgo && reminder2h <= now) {
-        const msg = generateMessage(apt.id, 'reminder-2h', reminder2h);
-        if (msg) messages.push(msg);
+    const delivered = Math.random() > 0.08;
+    let deliveredAt: Date | undefined;
+    let readAt: Date | undefined;
+    let respondedAt: Date | undefined;
+    let response: string | undefined;
+    let status: Message['status'] = 'sent';
+
+    if (delivered) {
+      deliveredAt = new Date(sentAt);
+      deliveredAt.setMinutes(deliveredAt.getMinutes() + Math.floor(Math.random() * 5));
+      status = 'delivered';
+
+      const isRead = Math.random() > 0.22;
+      if (isRead) {
+        readAt = new Date(deliveredAt);
+        readAt.setMinutes(readAt.getMinutes() + Math.floor(Math.random() * 30));
+        status = 'read';
+
+        const responded = Math.random() > 0.35;
+        if (responded && type === 'reminder') {
+          respondedAt = new Date(readAt);
+          respondedAt.setMinutes(respondedAt.getMinutes() + Math.floor(Math.random() * 60));
+          response = ['SÍ', 'Confirmo', 'OK', 'Ahí estaré', '👍'][Math.floor(Math.random() * 5)];
+          status = 'responded';
+        }
       }
+    } else {
+      status = 'failed';
     }
 
-    // Follow-up (for completed appointments)
-    if (apt.status === 'completed' && apt.completedAt) {
-      const followUp = new Date(apt.completedAt);
-      followUp.setHours(followUp.getHours() + 24);
-      if (followUp >= thirtyDaysAgo && followUp <= now) {
-        const msg = generateMessage(apt.id, 'follow-up', followUp);
-        if (msg) messages.push(msg);
-      }
-    }
-  });
+    messages.push({
+      id: `msg-${i + 1}`,
+      patientId: `pat-${Math.floor(Math.random() * 500) + 1}`,
+      patientName,
+      appointmentId: `appt-${Math.floor(Math.random() * 400) + 1}`,
+      type,
+      template,
+      content,
+      sentAt,
+      deliveredAt,
+      readAt,
+      respondedAt,
+      response,
+      status
+    });
+  }
 
   return messages.sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime());
-}
+};
 
-export const MOCK_MESSAGES = generateMockMessages();
+export const mockMessages = generateMessages();
 
-/**
- * Get message statistics
- */
-export function getMessageStats() {
-  const total = MOCK_MESSAGES.length;
-  const delivered = MOCK_MESSAGES.filter(m => m.status !== 'sent' && m.status !== 'failed').length;
-  const read = MOCK_MESSAGES.filter(m => m.status === 'read' || m.status === 'responded').length;
-  const responded = MOCK_MESSAGES.filter(m => m.status === 'responded').length;
-  const failed = MOCK_MESSAGES.filter(m => m.status === 'failed').length;
+export const getMessageStats = (): MessageStats => {
+  const total = mockMessages.length;
+  const sent = mockMessages.filter(m => m.status !== 'failed').length;
+  const delivered = mockMessages.filter(m => m.deliveredAt).length;
+  const read = mockMessages.filter(m => m.readAt).length;
+  const responded = mockMessages.filter(m => m.respondedAt).length;
+  const failed = mockMessages.filter(m => m.status === 'failed').length;
 
   return {
     total,
+    sent,
     delivered,
     read,
     responded,
     failed,
-    deliveryRate: total > 0 ? Math.round((delivered / total) * 1000) / 10 : 0,
-    readRate: delivered > 0 ? Math.round((read / delivered) * 1000) / 10 : 0,
-    responseRate: read > 0 ? Math.round((responded / read) * 1000) / 10 : 0,
-    failureRate: total > 0 ? Math.round((failed / total) * 1000) / 10 : 0
+    deliveryRate: (delivered / sent) * 100,
+    readRate: (read / delivered) * 100,
+    responseRate: (responded / read) * 100
   };
-}
+};
 
-export const MESSAGE_STATS = getMessageStats();
+export const getMessagesByType = () => {
+  return {
+    reminder: mockMessages.filter(m => m.type === 'reminder').length,
+    confirmation: mockMessages.filter(m => m.type === 'confirmation').length,
+    followup: mockMessages.filter(m => m.type === 'followup').length,
+    cancellation: mockMessages.filter(m => m.type === 'cancellation').length
+  };
+};
