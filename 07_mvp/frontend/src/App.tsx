@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 import { DashboardLayout } from '@/components/layout'
 import DashboardPage from '@/pages/Dashboard'
+import PatientsPage from '@/pages/Patients'
+import PatientProfilePage from '@/pages/PatientProfile'
 
 // Placeholder para otras páginas
 function Placeholder({ title }: { title: string }) {
@@ -17,7 +19,8 @@ function App() {
     <DashboardLayout>
       <Routes>
         <Route path="/" element={<DashboardPage />} />
-        <Route path="/patients" element={<Placeholder title="Pacientes" />} />
+        <Route path="/patients" element={<PatientsPage />} />
+        <Route path="/patients/:id" element={<PatientProfilePage />} />
         <Route path="/appointments" element={<Placeholder title="Consultas" />} />
         <Route path="/reputation" element={<Placeholder title="Sistema de Reputación" />} />
         <Route path="/messages" element={<Placeholder title="Mensajes" />} />
