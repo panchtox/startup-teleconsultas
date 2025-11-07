@@ -19,3 +19,6 @@ export * from './metrics';
 
 // Messages
 export * from './messages';
+
+// Dashboard
+export * from './dashboard';
