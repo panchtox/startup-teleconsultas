@@ -2,7 +2,7 @@
  * Mock badge catalog
  */
 
-import type { Badge } from '../types';
+import type { Badge, BadgeCategory } from '../types';
 
 export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
   // Attendance Badges
@@ -11,7 +11,7 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     name: 'Primera Consulta',
     description: 'Completaste tu primera teleconsulta',
     icon: '🎯',
-    category: 'milestone',
+    category: 'especial' as BadgeCategory,
     requirement: 'Completar 1 consulta'
   },
   {
@@ -19,7 +19,7 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     name: 'Mes Perfecto',
     description: 'Asististe a todas tus consultas del mes',
     icon: '⭐',
-    category: 'attendance',
+    category: 'asistencia' as BadgeCategory,
     requirement: 'Asistir a todas las consultas en un mes'
   },
   {
@@ -27,7 +27,8 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     name: 'Racha de 5',
     description: '5 consultas consecutivas sin faltar',
     icon: '🔥',
-    category: 'attendance',
+    category: 'asistencia' as BadgeCategory,
+    rarity: 'común' as const,
     requirement: 'Asistir a 5 consultas consecutivas'
   },
   {
@@ -35,7 +36,8 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     name: 'Racha de 10',
     description: '10 consultas consecutivas sin faltar',
     icon: '💎',
-    category: 'attendance',
+    category: 'asistencia' as BadgeCategory,
+    rarity: 'común' as const,
     requirement: 'Asistir a 10 consultas consecutivas'
   },
   {
@@ -43,7 +45,7 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     name: 'Año Completo',
     description: 'Un año de asistencia perfecta',
     icon: '🏆',
-    category: 'milestone',
+    category: 'especial' as BadgeCategory,
     requirement: 'Asistir a todas las consultas durante 1 año'
   },
   
@@ -53,7 +55,8 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     name: 'Siempre Puntual',
     description: 'Llegaste a tiempo a 10 consultas seguidas',
     icon: '⏰',
-    category: 'punctuality',
+    category: 'puntualidad' as BadgeCategory,
+    rarity: 'raro' as const,
     requirement: 'Llegar puntual a 10 consultas consecutivas'
   },
   {
@@ -61,7 +64,8 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     name: 'Madrugador',
     description: 'Te conectaste 5 minutos antes en 5 consultas',
     icon: '🌅',
-    category: 'punctuality',
+    category: 'puntualidad' as BadgeCategory,
+    rarity: 'raro' as const,
     requirement: 'Conectarse 5 min antes en 5 consultas'
   },
   
@@ -72,6 +76,8 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     description: 'Respondiste a 10 recordatorios en menos de 1 hora',
     icon: '⚡',
     category: 'engagement',
+    rarity: 'común' as const,
+    rarity: 'común' as const,
     requirement: 'Responder 10 recordatorios en <1 hora'
   },
   {
@@ -79,7 +85,8 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     name: 'Compromiso Total',
     description: 'No cancelaste ninguna consulta en 6 meses',
     icon: '✅',
-    category: 'attendance',
+    category: 'asistencia' as BadgeCategory,
+    rarity: 'épico' as const,
     requirement: 'Sin cancelaciones por 6 meses'
   },
   {
@@ -97,7 +104,8 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     name: '25 Consultas',
     description: 'Completaste 25 teleconsultas',
     icon: '🎖️',
-    category: 'milestone',
+    category: 'especial' as BadgeCategory,
+    rarity: 'raro' as const,
     requirement: 'Completar 25 consultas'
   },
   {
@@ -105,7 +113,8 @@ export const BADGE_CATALOG: Omit<Badge, 'earnedAt' | 'progress'>[] = [
     name: '50 Consultas',
     description: 'Completaste 50 teleconsultas',
     icon: '🏅',
-    category: 'milestone',
+    category: 'especial' as BadgeCategory,
+    rarity: 'épico' as const,
     requirement: 'Completar 50 consultas'
   }
 ];
@@ -126,7 +135,7 @@ export function calculateEarnedBadges(
   if (completedAppointments >= 1) {
     earned.push({
       ...BADGE_CATALOG.find(b => b.id === 'first-appointment')!,
-      earnedAt: new Date(now.getTime() - Math.random() * 180 * 24 * 60 * 60 * 1000)
+      earnedDate: new Date(now.getTime() - Math.random() * 180 * 24 * 60 * 60 * 1000)
     });
   }
 
@@ -134,14 +143,14 @@ export function calculateEarnedBadges(
   if (consecutiveAttendances >= 5) {
     earned.push({
       ...BADGE_CATALOG.find(b => b.id === 'streak-5')!,
-      earnedAt: new Date(now.getTime() - Math.random() * 60 * 24 * 60 * 60 * 1000)
+      earnedDate: new Date(now.getTime() - Math.random() * 60 * 24 * 60 * 60 * 1000)
     });
   }
 
   if (consecutiveAttendances >= 10) {
     earned.push({
       ...BADGE_CATALOG.find(b => b.id === 'streak-10')!,
-      earnedAt: new Date(now.getTime() - Math.random() * 30 * 24 * 60 * 60 * 1000)
+      earnedDate: new Date(now.getTime() - Math.random() * 30 * 24 * 60 * 60 * 1000)
     });
   }
 
@@ -149,7 +158,7 @@ export function calculateEarnedBadges(
   if (attendanceRate === 100 && completedAppointments >= 5) {
     earned.push({
       ...BADGE_CATALOG.find(b => b.id === 'never-cancel')!,
-      earnedAt: new Date(now.getTime() - Math.random() * 90 * 24 * 60 * 60 * 1000)
+      earnedDate: new Date(now.getTime() - Math.random() * 90 * 24 * 60 * 60 * 1000)
     });
   }
 
@@ -157,7 +166,7 @@ export function calculateEarnedBadges(
   if (responseRate >= 90) {
     earned.push({
       ...BADGE_CATALOG.find(b => b.id === 'quick-responder')!,
-      earnedAt: new Date(now.getTime() - Math.random() * 45 * 24 * 60 * 60 * 1000)
+      earnedDate: new Date(now.getTime() - Math.random() * 45 * 24 * 60 * 60 * 1000)
     });
   }
 
@@ -165,14 +174,14 @@ export function calculateEarnedBadges(
   if (completedAppointments >= 25) {
     earned.push({
       ...BADGE_CATALOG.find(b => b.id === 'appointments-25')!,
-      earnedAt: new Date(now.getTime() - Math.random() * 120 * 24 * 60 * 60 * 1000)
+      earnedDate: new Date(now.getTime() - Math.random() * 120 * 24 * 60 * 60 * 1000)
     });
   }
 
   if (completedAppointments >= 50) {
     earned.push({
       ...BADGE_CATALOG.find(b => b.id === 'appointments-50')!,
-      earnedAt: new Date(now.getTime() - Math.random() * 90 * 24 * 60 * 60 * 1000)
+      earnedDate: new Date(now.getTime() - Math.random() * 90 * 24 * 60 * 60 * 1000)
     });
   }
 

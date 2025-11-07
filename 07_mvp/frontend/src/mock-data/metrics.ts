@@ -114,10 +114,6 @@ export function calculateSystemMetrics(): SystemMetrics {
       .map(a => a.patientId)
   );
 
-  const newPatients = MOCK_PATIENTS.filter(p => 
-    p.registeredAt >= thirtyDaysAgo
-  ).length;
-
   return {
     period: 'month',
     startDate: thirtyDaysAgo,
@@ -187,7 +183,7 @@ export function generateAbsenteeismTrend(): AbsenteeismTrend[] {
     const total = completed + noShows;
 
     const noShowRate = total > 0 ? (noShows / total) * 100 : 0;
-    const attendanceRate = total > 0 ? (completed / total) * 100 : 0;
+    const rate = total > 0 ? (completed / total) * 100 : 0;
 
     // Simulate improvement over time
     const improvementFactor = (5 - i) * 0.05; // 0% to 25% improvement
@@ -198,7 +194,7 @@ export function generateAbsenteeismTrend(): AbsenteeismTrend[] {
       period: monthStart.toLocaleDateString('es-AR', { month: 'short', year: 'numeric' }),
       date: monthStart,
       noShowRate: Math.round(adjustedNoShowRate * 10) / 10,
-      attendanceRate: Math.round(adjustedAttendanceRate * 10) / 10,
+      attendanceRate: Math.round(rate * 10) / 10,
       totalAppointments: total,
       noShows: Math.round((total * adjustedNoShowRate) / 100)
     });
