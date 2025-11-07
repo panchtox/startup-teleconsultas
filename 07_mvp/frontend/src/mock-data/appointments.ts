@@ -4,7 +4,7 @@
 
 import type { Appointment, AppointmentStatus, AppointmentType } from '../types';
 import { allPatients } from './patients';
-import { MOCK_DOCTORS, getRandomDoctor } from './doctors';
+import { getRandomDoctor } from './doctors';
 
 const CONSULTATION_REASONS = [
   'Control de rutina',
@@ -35,6 +35,10 @@ const CANCELLATION_REASONS = [
   'Reprogramada por el paciente',
   'El paciente no se presentó'
 ];
+
+function getRandomPatient() {
+  return allPatients[Math.floor(Math.random() * allPatients.length)];
+}
 
 function randomTime(): string {
   const hours = 9 + Math.floor(Math.random() * 9); // 9am - 6pm
