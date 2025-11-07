@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Clock, Calendar, User } from 'lucide-react';
+import { FileText, Clock, User } from 'lucide-react';
 
 interface Template {
   id: string;

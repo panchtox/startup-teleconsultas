@@ -5,7 +5,6 @@ import { DollarSign, TrendingUp, Clock, Calendar } from 'lucide-react';
 
 export function ROICalculator() {
   const costPerConsultation = 180; // USD
-  const avgConsultationTime = 1.8; // hours
   const systemCostPerMonth = 1500; // USD (estimado)
 
   return (
