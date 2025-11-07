@@ -1,286 +1,535 @@
 /**
- * Mock patient data - 500 pacientes argentinos
+ * Mock Data Generator para Pacientes Argentinos
+ * 
+ * Genera 500 perfiles realistas con:
+ * - Nombres y apellidos argentinos comunes
+ * - DNIs válidos
+ * - Direcciones de CABA y GBA
+ * - Obras sociales reales
+ * - Historial de consultas coherente
+ * - Scores distribuidos realísticamente
  */
 
-import type { Patient, PatientLevel, PatientScore, HealthInsurance } from '../types';
-import { calculateEarnedBadges } from './badges';
+import { 
+  Patient, 
+  PatientLevel, 
+  Badge,
+  ConsultationHistoryItem,
+  ScoreHistoryPoint,
+  PatientStats,
+  PatientsOverview
+} from '../types/patient';
+import { getLevelByScore } from '../config/reputation';
+import { BADGE_CATALOG } from '../config/reputation';
+import { subMonths, subDays, subHours, addDays } from 'date-fns';
 
-// Nombres y apellidos comunes argentinos
-const FIRST_NAMES_M = [
-  'Juan', 'Carlos', 'Diego', 'Martín', 'Sebastián', 'Fernando', 'Javier', 'Alejandro',
-  'Federico', 'Pablo', 'Nicolás', 'Matías', 'Lucas', 'Gonzalo', 'Rodrigo', 'Facundo',
-  'Maximiliano', 'Ezequiel', 'Cristian', 'Damián', 'Hernán', 'Leonardo', 'Marcelo'
+// ==========================================
+// DATOS ARGENTINOS REALISTAS
+// ==========================================
+
+const ARGENTINE_FIRST_NAMES = {
+  Masculino: [
+    'Juan', 'Carlos', 'José', 'Luis', 'Jorge', 'Miguel', 'Martín', 'Diego', 
+    'Pablo', 'Fernando', 'Alejandro', 'Ricardo', 'Gabriel', 'Roberto', 'Eduardo',
+    'Matías', 'Sebastián', 'Santiago', 'Nicolás', 'Lucas', 'Franco', 'Facundo',
+    'Gonzalo', 'Maximiliano', 'Federico', 'Ignacio', 'Tomás', 'Agustín', 'Rodrigo'
+  ],
+  Femenino: [
+    'María', 'Ana', 'Laura', 'Claudia', 'Marta', 'Silvia', 'Susana', 'Patricia',
+    'Gabriela', 'Carolina', 'Valeria', 'Andrea', 'Daniela', 'Marcela', 'Mónica',
+    'Sofía', 'Florencia', 'Camila', 'Victoria', 'Martina', 'Lucía', 'Valentina',
+    'Milagros', 'Agustina', 'Jimena', 'Romina', 'Natalia', 'Paula', 'Bárbara'
+  ]
+};
+
+const ARGENTINE_LAST_NAMES = [
+  'González', 'Rodríguez', 'Fernández', 'López', 'Martínez', 'García', 'Pérez',
+  'Gómez', 'Sánchez', 'Díaz', 'Álvarez', 'Moreno', 'Romero', 'Torres', 'Ruiz',
+  'Ramírez', 'Flores', 'Castro', 'Silva', 'Mendoza', 'Rojas', 'Vargas', 'Herrera',
+  'Medina', 'Ortiz', 'Jiménez', 'Navarro', 'Gutiérrez', 'Domínguez', 'Ramos',
+  'Vega', 'Molina', 'Reyes', 'Acosta', 'Benítez', 'Giménez', 'Suárez', 'Cabrera'
 ];
 
-const FIRST_NAMES_F = [
-  'María', 'Ana', 'Laura', 'Carolina', 'Gabriela', 'Silvina', 'Valeria', 'Andrea',
-  'Natalia', 'Vanesa', 'Mariana', 'Claudia', 'Daniela', 'Mónica', 'Patricia', 'Soledad',
-  'Romina', 'Florencia', 'Luciana', 'Celeste', 'Victoria', 'Camila', 'Julieta'
+const BUENOS_AIRES_NEIGHBORHOODS = [
+  { neighborhood: 'Palermo', city: 'CABA', province: 'Buenos Aires', postalCode: '1425' },
+  { neighborhood: 'Belgrano', city: 'CABA', province: 'Buenos Aires', postalCode: '1428' },
+  { neighborhood: 'Recoleta', city: 'CABA', province: 'Buenos Aires', postalCode: '1113' },
+  { neighborhood: 'Caballito', city: 'CABA', province: 'Buenos Aires', postalCode: '1406' },
+  { neighborhood: 'Villa Crespo', city: 'CABA', province: 'Buenos Aires', postalCode: '1414' },
+  { neighborhood: 'Almagro', city: 'CABA', province: 'Buenos Aires', postalCode: '1174' },
+  { neighborhood: 'Flores', city: 'CABA', province: 'Buenos Aires', postalCode: '1406' },
+  { neighborhood: 'Núñez', city: 'CABA', province: 'Buenos Aires', postalCode: '1429' },
+  { neighborhood: 'Colegiales', city: 'CABA', province: 'Buenos Aires', postalCode: '1426' },
+  { neighborhood: 'Villa Urquiza', city: 'CABA', province: 'Buenos Aires', postalCode: '1431' },
+  { neighborhood: 'San Telmo', city: 'CABA', province: 'Buenos Aires', postalCode: '1098' },
+  { neighborhood: 'Barracas', city: 'CABA', province: 'Buenos Aires', postalCode: '1280' },
+  { neighborhood: 'Vicente López', city: 'Vicente López', province: 'Buenos Aires', postalCode: '1602' },
+  { neighborhood: 'Olivos', city: 'Vicente López', province: 'Buenos Aires', postalCode: '1636' },
+  { neighborhood: 'San Isidro', city: 'San Isidro', province: 'Buenos Aires', postalCode: '1642' },
+  { neighborhood: 'Martínez', city: 'San Isidro', province: 'Buenos Aires', postalCode: '1640' },
+  { neighborhood: 'San Fernando', city: 'San Fernando', province: 'Buenos Aires', postalCode: '1646' },
+  { neighborhood: 'Tigre', city: 'Tigre', province: 'Buenos Aires', postalCode: '1648' },
+  { neighborhood: 'Quilmes', city: 'Quilmes', province: 'Buenos Aires', postalCode: '1878' },
+  { neighborhood: 'Lomas de Zamora', city: 'Lomas de Zamora', province: 'Buenos Aires', postalCode: '1832' }
 ];
 
-const LAST_NAMES = [
-  'González', 'Rodríguez', 'García', 'Fernández', 'López', 'Martínez', 'Pérez', 'Sánchez',
-  'Romero', 'Torres', 'Álvarez', 'Díaz', 'Morales', 'Castro', 'Benítez', 'Ramírez',
-  'Vargas', 'Rojas', 'Giménez', 'Silva', 'Ruiz', 'Mendoza', 'Vega', 'Acosta', 'Blanco',
-  'Molina', 'Herrera', 'Medina', 'Campos', 'Suárez', 'Rios', 'Aguirre', 'Peralta'
+const ARGENTINE_STREETS = [
+  'Av. Santa Fe', 'Av. Corrientes', 'Av. Cabildo', 'Av. Rivadavia', 'Av. Callao',
+  'Av. Pueyrredón', 'Av. Córdoba', 'Av. Scalabrini Ortiz', 'Av. Libertador',
+  'Av. del Libertador', 'Av. Las Heras', 'Av. Belgrano', 'Av. Entre Ríos',
+  'Calle Thames', 'Calle Laprida', 'Calle Bulnes', 'Calle Gurruchaga',
+  'Calle Palpa', 'Calle Armenia', 'Calle Honduras', 'Calle Soler'
 ];
 
-const CITIES_ARGENTINA = [
-  { city: 'Buenos Aires', province: 'Buenos Aires', postalCode: '1000' },
-  { city: 'La Plata', province: 'Buenos Aires', postalCode: '1900' },
-  { city: 'Mar del Plata', province: 'Buenos Aires', postalCode: '7600' },
-  { city: 'Córdoba', province: 'Córdoba', postalCode: '5000' },
-  { city: 'Rosario', province: 'Santa Fe', postalCode: '2000' },
-  { city: 'Mendoza', province: 'Mendoza', postalCode: '5500' },
-  { city: 'Tucumán', province: 'Tucumán', postalCode: '4000' },
-  { city: 'Salta', province: 'Salta', postalCode: '4400' },
-  { city: 'Santa Fe', province: 'Santa Fe', postalCode: '3000' },
-  { city: 'San Juan', province: 'San Juan', postalCode: '5400' }
+const HEALTH_INSURANCES = [
+  'OSDE', 'Swiss Medical', 'Galeno', 'OMINT', 'Medicus', 'Sancor Salud',
+  'Accord Salud', 'OSECAC', 'OSPE', 'IOMA', 'PAMI', 'Medifé', 'Premedic',
+  'OSDIPP', 'OSSEG', 'OSCHOCA', 'Unión Personal', 'Luis Pasteur'
 ];
 
-const STREETS = [
-  'Av. Corrientes', 'Av. Rivadavia', 'Av. Santa Fe', 'Av. Cabildo', 'Av. Callao',
-  'San Martín', 'Belgrano', 'Sarmiento', 'Mitre', 'Moreno', 'Alvear', 'Libertad',
-  'Independencia', 'Entre Ríos', 'Jujuy', 'Tucumán', 'Córdoba', 'Paraguay'
+const SPECIALTIES = [
+  'Medicina General', 'Cardiología', 'Pediatría', 'Psicología', 'Dermatología',
+  'Traumatología', 'Ginecología', 'Nutrición', 'Psiquiatría', 'Neurología'
 ];
 
-const HEALTH_INSURANCES: HealthInsurance[] = [
-  'OSDE', 'Swiss Medical', 'Galeno', 'Medicus', 'IOMA', 'PAMI', 'Particular'
+const DOCTORS = [
+  'Dr. Martín Rodríguez', 'Dra. Laura Fernández', 'Dr. Carlos López',
+  'Dra. Ana García', 'Dr. Diego Martínez', 'Dra. Sofía González',
+  'Dr. Fernando Pérez', 'Dra. Carolina Sánchez', 'Dr. Pablo Díaz',
+  'Dra. Valeria Romero', 'Dr. Lucas Torres', 'Dra. Florencia Ruiz',
+  'Dr. Sebastián Moreno', 'Dra. Camila Castro', 'Dr. Nicolás Silva'
 ];
+
+// ==========================================
+// FUNCIONES AUXILIARES
+// ==========================================
 
 function randomItem<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-function randomDate(start: Date, end: Date): Date {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+function randomNumber(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function calculateScore(
-  completedAppointments: number,
-  missedAppointments: number,
-  cancelledAppointments: number
-): PatientScore {
-  const totalAppointments = completedAppointments + missedAppointments + cancelledAppointments;
-  
-  if (totalAppointments === 0) {
-    return {
-      total: 0,
-      level: 'new',
-      attendanceRate: 0,
-      punctualityRate: 0,
-      cancellationRate: 0,
-      responseRate: 0,
-      consecutiveAttendances: 0,
-      totalAppointments: 0,
-      completedAppointments: 0,
-      missedAppointments: 0,
-      cancelledAppointments: 0,
-      lastUpdated: new Date()
-    };
-  }
+function generateDNI(): string {
+  return String(randomNumber(20000000, 45000000));
+}
 
-  const attendanceRate = (completedAppointments / totalAppointments) * 100;
-  const punctualityRate = 85 + Math.random() * 15; // 85-100%
-  const cancellationRate = (cancelledAppointments / totalAppointments) * 100;
-  const responseRate = 70 + Math.random() * 30; // 70-100%
+function generatePhone(): string {
+  const areaCode = randomItem(['11', '351', '341', '261', '381']);
+  const number = randomNumber(10000000, 99999999);
+  return `+54 9 ${areaCode} ${String(number).slice(0, 4)}-${String(number).slice(4)}`;
+}
 
-  const consecutiveAttendances = Math.min(
-    completedAppointments,
-    Math.floor(Math.random() * 15)
+function generateEmail(firstName: string, lastName: string): string {
+  const providers = ['gmail.com', 'hotmail.com', 'yahoo.com.ar', 'outlook.com'];
+  const normalized = `${firstName.toLowerCase()}.${lastName.toLowerCase()}`.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return `${normalized}@${randomItem(providers)}`;
+}
+
+// ==========================================
+// GENERADORES DE HISTORIAL
+// ==========================================
+
+function generateConsultationHistory(
+  patientId: string,
+  score: number,
+  monthsActive: number
+): ConsultationHistoryItem[] {
+  const history: ConsultationHistoryItem[] = [];
+  const consultationsCount = randomNumber(
+    Math.max(1, Math.floor(monthsActive / 2)),
+    monthsActive * 2
   );
-
-  // Score calculation
-  const attendanceScore = attendanceRate * 0.4;
-  const punctualityScore = punctualityRate * 0.2;
-  const cancellationScore = (100 - cancellationRate) * 0.2;
-  const responseScore = responseRate * 0.2;
-
-  const total = Math.round(attendanceScore + punctualityScore + cancellationScore + responseScore);
-
-  // Determine level
-  let level: PatientLevel;
-  if (totalAppointments < 3) {
-    level = 'new';
-  } else if (total >= 90) {
-    level = 'elite';
-  } else if (total >= 75) {
-    level = 'premium';
-  } else if (total >= 60) {
-    level = 'standard';
-  } else {
-    level = 'at-risk';
+  
+  // Determinar patrón de asistencia basado en score
+  let attendanceRate = 0.95;
+  if (score >= 90) attendanceRate = 0.98;
+  else if (score >= 75) attendanceRate = 0.90;
+  else if (score >= 60) attendanceRate = 0.80;
+  else if (score >= 40) attendanceRate = 0.70;
+  else attendanceRate = 0.50;
+  
+  for (let i = 0; i < consultationsCount; i++) {
+    const daysAgo = randomNumber(i * 15, (i + 1) * 30);
+    const date = subDays(new Date(), daysAgo);
+    const attended = Math.random() < attendanceRate;
+    
+    let status: ConsultationStatus = 'Completada';
+    let scoreImpact = 5;
+    
+    if (!attended) {
+      const missType = Math.random();
+      if (missType < 0.6) {
+        status = 'Ausente';
+        scoreImpact = -10;
+      } else {
+        status = 'Cancelada';
+        scoreImpact = -5;
+      }
+    }
+    
+    history.push({
+      id: `cons-${patientId}-${i}`,
+      date,
+      time: `${randomNumber(8, 18)}:${randomItem(['00', '30'])}`,
+      doctorName: randomItem(DOCTORS),
+      specialty: randomItem(SPECIALTIES),
+      status,
+      scoreImpact,
+      remindersSent: randomNumber(1, 3),
+      confirmedAt: attended ? subHours(date, randomNumber(2, 48)) : undefined,
+      notes: attended ? undefined : randomItem([
+        'Paciente no se presentó',
+        'Canceló con menos de 24hs de anticipación',
+        'No respondió a recordatorios'
+      ])
+    });
   }
-
-  return {
-    total,
-    level,
-    attendanceRate: Math.round(attendanceRate * 10) / 10,
-    punctualityRate: Math.round(punctualityRate * 10) / 10,
-    cancellationRate: Math.round(cancellationRate * 10) / 10,
-    responseRate: Math.round(responseRate * 10) / 10,
-    consecutiveAttendances,
-    totalAppointments,
-    completedAppointments,
-    missedAppointments,
-    cancelledAppointments,
-    lastUpdated: new Date()
-  };
+  
+  return history.sort((a, b) => b.date.getTime() - a.date.getTime());
 }
+
+function generateScoreHistory(
+  consultationHistory: ConsultationHistoryItem[]
+): ScoreHistoryPoint[] {
+  const history: ScoreHistoryPoint[] = [];
+  let currentScore = 50; // Todos empiezan en 50
+  
+  history.push({
+    date: consultationHistory[consultationHistory.length - 1]?.date || subMonths(new Date(), 6),
+    score: currentScore,
+    reason: 'Registro inicial',
+    change: 0
+  });
+  
+  // Ordenar consultas por fecha ascendente
+  const sortedConsultations = [...consultationHistory].sort(
+    (a, b) => a.date.getTime() - b.date.getTime()
+  );
+  
+  sortedConsultations.forEach((consultation) => {
+    currentScore = Math.max(0, Math.min(100, currentScore + consultation.scoreImpact));
+    
+    let reason = '';
+    if (consultation.status === 'Completada') {
+      reason = `Asistió a consulta de ${consultation.specialty}`;
+    } else if (consultation.status === 'Ausente') {
+      reason = `Ausente en consulta de ${consultation.specialty}`;
+    } else if (consultation.status === 'Cancelada') {
+      reason = `Canceló consulta de ${consultation.specialty}`;
+    }
+    
+    history.push({
+      date: consultation.date,
+      score: currentScore,
+      reason,
+      change: consultation.scoreImpact
+    });
+  });
+  
+  return history;
+}
+
+function generateBadges(stats: PatientStats, score: number): Badge[] {
+  const earnedBadges: Badge[] = [];
+  
+  // Todos tienen el badge de primera consulta si tienen al menos 1 consulta
+  if (stats.attendedConsultations >= 1) {
+    earnedBadges.push({
+      ...BADGE_CATALOG.find(b => b.id === 'first-consultation')!,
+      earnedDate: subMonths(new Date(), randomNumber(1, 6))
+    });
+  }
+  
+  // Usuario frecuente
+  if (stats.attendedConsultations >= 10) {
+    earnedBadges.push({
+      ...BADGE_CATALOG.find(b => b.id === 'frequent-user')!,
+      earnedDate: subMonths(new Date(), randomNumber(1, 3))
+    });
+  }
+  
+  // Rachas
+  if (stats.consecutiveAttendances >= 5) {
+    earnedBadges.push({
+      ...BADGE_CATALOG.find(b => b.id === 'streak-5')!,
+      earnedDate: subDays(new Date(), randomNumber(7, 30))
+    });
+  }
+  
+  if (stats.consecutiveAttendances >= 10) {
+    earnedBadges.push({
+      ...BADGE_CATALOG.find(b => b.id === 'streak-10')!,
+      earnedDate: subDays(new Date(), randomNumber(1, 15))
+    });
+  }
+  
+  // Confirmación rápida
+  if (stats.avgResponseTime <= 60) {
+    earnedBadges.push({
+      ...BADGE_CATALOG.find(b => b.id === 'quick-confirmer')!,
+      earnedDate: subMonths(new Date(), randomNumber(1, 2))
+    });
+  }
+  
+  // Mes perfecto (solo para scores altos)
+  if (score >= 85 && Math.random() < 0.3) {
+    earnedBadges.push({
+      ...BADGE_CATALOG.find(b => b.id === 'perfect-month')!,
+      earnedDate: subMonths(new Date(), randomNumber(1, 4))
+    });
+  }
+  
+  // Miembro fundador (primeros pacientes)
+  if (Math.random() < 0.02) {
+    earnedBadges.push({
+      ...BADGE_CATALOG.find(b => b.id === 'founding-member')!,
+      earnedDate: subMonths(new Date(), 6)
+    });
+  }
+  
+  return earnedBadges;
+}
+
+// ==========================================
+// GENERADOR PRINCIPAL
+// ==========================================
 
 function generatePatient(index: number): Patient {
-  const gender = Math.random() > 0.5 ? 'M' : 'F';
-  const firstName = gender === 'M' ? randomItem(FIRST_NAMES_M) : randomItem(FIRST_NAMES_F);
-  const lastName = randomItem(LAST_NAMES);
-  const secondLastName = randomItem(LAST_NAMES);
+  // Demografía
+  const gender = randomItem(['Masculino', 'Femenino']) as 'Masculino' | 'Femenino';
+  const firstName = randomItem(ARGENTINE_FIRST_NAMES[gender]);
+  const lastName = randomItem(ARGENTINE_LAST_NAMES);
+  const fullName = `${firstName} ${lastName}`;
+  const age = randomNumber(18, 75);
   
-  // Age distribution: más pacientes entre 25-65 años
-  const ageGroup = Math.random();
-  let age: number;
-  if (ageGroup < 0.1) age = 18 + Math.floor(Math.random() * 7); // 18-24
-  else if (ageGroup < 0.4) age = 25 + Math.floor(Math.random() * 15); // 25-39
-  else if (ageGroup < 0.7) age = 40 + Math.floor(Math.random() * 15); // 40-54
-  else if (ageGroup < 0.9) age = 55 + Math.floor(Math.random() * 15); // 55-69
-  else age = 70 + Math.floor(Math.random() * 20); // 70-89
-
-  const dateOfBirth = new Date();
-  dateOfBirth.setFullYear(dateOfBirth.getFullYear() - age);
-
-  const location = randomItem(CITIES_ARGENTINA);
-  const street = randomItem(STREETS);
+  // Ubicación
+  const location = randomItem(BUENOS_AIRES_NEIGHBORHOODS);
+  const street = randomItem(ARGENTINE_STREETS);
+  const streetNumber = randomNumber(100, 9999);
   
-  // Appointment history - distribuir según nivel
-  const levelDistribution = Math.random();
-  let completed: number, missed: number, cancelled: number;
+  // Dates
+  const monthsActive = randomNumber(1, 12);
+  const memberSince = subMonths(new Date(), monthsActive);
   
-  if (levelDistribution < 0.2) {
-    // Elite (20%)
-    completed = 15 + Math.floor(Math.random() * 35);
-    missed = 0;
-    cancelled = Math.floor(Math.random() * 2);
-  } else if (levelDistribution < 0.5) {
-    // Premium (30%)
-    completed = 10 + Math.floor(Math.random() * 20);
-    missed = Math.floor(Math.random() * 2);
-    cancelled = Math.floor(Math.random() * 3);
-  } else if (levelDistribution < 0.8) {
-    // Standard (30%)
-    completed = 5 + Math.floor(Math.random() * 15);
-    missed = 1 + Math.floor(Math.random() * 3);
-    cancelled = 1 + Math.floor(Math.random() * 4);
-  } else if (levelDistribution < 0.95) {
-    // New (15%)
-    completed = Math.floor(Math.random() * 3);
-    missed = 0;
-    cancelled = Math.floor(Math.random() * 2);
+  // Score distribution más realista
+  // 20% Elite (90-100), 30% Premium (75-89), 30% Estándar (60-74), 
+  // 15% Nuevo (40-59), 5% En Riesgo (0-39)
+  let score: number;
+  const rand = Math.random();
+  if (rand < 0.05) {
+    score = randomNumber(0, 39); // En Riesgo
+  } else if (rand < 0.20) {
+    score = randomNumber(40, 59); // Nuevo
+  } else if (rand < 0.50) {
+    score = randomNumber(60, 74); // Estándar
+  } else if (rand < 0.80) {
+    score = randomNumber(75, 89); // Premium
   } else {
-    // At Risk (5%)
-    completed = 3 + Math.floor(Math.random() * 8);
-    missed = 3 + Math.floor(Math.random() * 5);
-    cancelled = 2 + Math.floor(Math.random() * 4);
+    score = randomNumber(90, 100); // Elite
   }
-
-  const score = calculateScore(completed, missed, cancelled);
-  const badges = calculateEarnedBadges(
-    completed,
-    score.consecutiveAttendances,
-    score.attendanceRate,
-    score.responseRate
+  
+  const level = getLevelByScore(score);
+  
+  // Historial de consultas
+  const consultationHistory = generateConsultationHistory(
+    `pat-${index}`,
+    score,
+    monthsActive
   );
-
-  const registeredMonthsAgo = Math.floor(Math.random() * 24);
-  const registeredAt = new Date();
-  registeredAt.setMonth(registeredAt.getMonth() - registeredMonthsAgo);
-
-  const hasUpcoming = Math.random() > 0.4;
-  const nextAppointmentAt = hasUpcoming 
-    ? new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000)
-    : undefined;
-
-  const lastAppointmentAt = completed > 0
-    ? new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000)
-    : undefined;
-
-  const dni = String(10000000 + Math.floor(Math.random() * 45000000));
-  const healthInsurance = randomItem(HEALTH_INSURANCES);
-
-  return {
-    id: `pat-${String(index + 1).padStart(4, '0')}`,
+  
+  // Estadísticas calculadas
+  const attendedConsultations = consultationHistory.filter(c => c.status === 'Completada').length;
+  const missedConsultations = consultationHistory.filter(c => c.status === 'Ausente').length;
+  const canceledConsultations = consultationHistory.filter(c => c.status === 'Cancelada').length;
+  const totalConsultations = consultationHistory.length;
+  
+  const attendanceRate = totalConsultations > 0 
+    ? Math.round((attendedConsultations / totalConsultations) * 100)
+    : 0;
+  
+  // Calcular racha actual
+  let consecutiveAttendances = 0;
+  let consecutiveMisses = 0;
+  for (const consultation of consultationHistory) {
+    if (consultation.status === 'Completada') {
+      consecutiveAttendances++;
+      consecutiveMisses = 0;
+    } else if (consultation.status === 'Ausente') {
+      consecutiveMisses++;
+      consecutiveAttendances = 0;
+    }
+  }
+  
+  const stats: PatientStats = {
+    totalConsultations,
+    attendedConsultations,
+    missedConsultations,
+    canceledConsultations,
+    attendanceRate,
+    avgResponseTime: randomNumber(30, 180),
+    consecutiveAttendances,
+    consecutiveMisses,
+    lastConsultationDate: consultationHistory[0]?.date,
+    nextConsultationDate: Math.random() < 0.25 ? addDays(new Date(), randomNumber(1, 30)) : undefined,
+    memberSince,
+    daysActive: Math.floor((new Date().getTime() - memberSince.getTime()) / (1000 * 60 * 60 * 24))
+  };
+  
+  // Score history
+  const scoreHistory = generateScoreHistory(consultationHistory);
+  
+  // Badges
+  const badges = generateBadges(stats, score);
+  
+  // Tags
+  const tags: string[] = [];
+  if (level === 'En Riesgo') tags.push('Alto Riesgo');
+  if (level === 'Elite') tags.push('VIP');
+  if (monthsActive <= 2) tags.push('Nuevo');
+  if (consecutiveAttendances >= 5) tags.push('Racha Activa');
+  if (badges.some(b => b.id === 'founding-member')) tags.push('Miembro Fundador');
+  
+  // Construir paciente completo
+  const patient: Patient = {
+    id: `pat-${String(index).padStart(4, '0')}`,
     firstName,
-    lastName: `${lastName} ${secondLastName}`,
-    dni,
-    dateOfBirth,
-    age,
-    gender,
-    email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${index}@email.com`,
-    phone: `+54 9 11 ${String(Math.floor(Math.random() * 90000000) + 10000000)}`,
-    whatsapp: `+54 9 11 ${String(Math.floor(Math.random() * 90000000) + 10000000)}`,
-    address: {
-      street,
-      number: String(100 + Math.floor(Math.random() * 9900)),
-      floor: Math.random() > 0.5 ? String(Math.floor(Math.random() * 20) + 1) : undefined,
-      apartment: Math.random() > 0.5 ? String.fromCharCode(65 + Math.floor(Math.random() * 10)) : undefined,
+    lastName,
+    fullName,
+    avatar: undefined, // Se generarán iniciales en el componente
+    
+    score,
+    level,
+    previousLevel: undefined,
+    
+    contact: {
+      phone: generatePhone(),
+      email: generateEmail(firstName, lastName),
+      address: `${street} ${streetNumber}`,
       city: location.city,
       province: location.province,
       postalCode: location.postalCode
     },
-    healthInsurance,
-    insuranceNumber: healthInsurance !== 'Particular' 
-      ? `${healthInsurance.substring(0, 3).toUpperCase()}${String(Math.floor(Math.random() * 1000000)).padStart(6, '0')}`
-      : undefined,
-    emergencyContact: {
-      name: randomItem([...FIRST_NAMES_M, ...FIRST_NAMES_F]) + ' ' + randomItem(LAST_NAMES),
-      relationship: randomItem(['Cónyuge', 'Hijo/a', 'Padre/Madre', 'Hermano/a', 'Amigo/a']),
-      phone: `+54 9 11 ${String(Math.floor(Math.random() * 90000000) + 10000000)}`
+    
+    demographics: {
+      age,
+      gender,
+      identificationType: 'DNI',
+      identificationNumber: generateDNI(),
+      healthInsurance: randomItem(HEALTH_INSURANCES),
+      healthInsuranceNumber: String(randomNumber(100000, 999999))
     },
-    score,
+    
+    stats,
     badges,
-    registeredAt,
-    lastAppointmentAt,
-    nextAppointmentAt,
-    status: Math.random() > 0.05 ? 'active' : 'inactive',
-    preferredLanguage: 'es',
-    notifications: {
-      email: Math.random() > 0.3,
-      sms: Math.random() > 0.5,
-      whatsapp: Math.random() > 0.1
+    consultationHistory,
+    scoreHistory,
+    
+    createdAt: memberSince,
+    updatedAt: new Date(),
+    isActive: true,
+    tags,
+    notes: undefined,
+    
+    preferences: {
+      whatsappReminders: true,
+      emailReminders: Math.random() < 0.7,
+      smsReminders: Math.random() < 0.3,
+      preferredContactTime: randomItem(['morning', 'afternoon', 'evening']),
+      language: 'es'
     }
   };
+  
+  return patient;
 }
 
-export const MOCK_PATIENTS: Patient[] = Array.from({ length: 500 }, (_, i) => generatePatient(i));
+// ==========================================
+// GENERAR TODOS LOS PACIENTES
+// ==========================================
 
-/**
- * Get patient by ID
- */
+export const allPatients: Patient[] = Array.from({ length: 500 }, (_, i) => generatePatient(i));
+
+// ==========================================
+// ESTADÍSTICAS AGREGADAS
+// ==========================================
+
+export const patientsOverview: PatientsOverview = {
+  total: allPatients.length,
+  byLevel: [
+    {
+      level: 'Elite',
+      count: allPatients.filter(p => p.level === 'Elite').length,
+      percentage: (allPatients.filter(p => p.level === 'Elite').length / allPatients.length) * 100
+    },
+    {
+      level: 'Premium',
+      count: allPatients.filter(p => p.level === 'Premium').length,
+      percentage: (allPatients.filter(p => p.level === 'Premium').length / allPatients.length) * 100
+    },
+    {
+      level: 'Estándar',
+      count: allPatients.filter(p => p.level === 'Estándar').length,
+      percentage: (allPatients.filter(p => p.level === 'Estándar').length / allPatients.length) * 100
+    },
+    {
+      level: 'Nuevo',
+      count: allPatients.filter(p => p.level === 'Nuevo').length,
+      percentage: (allPatients.filter(p => p.level === 'Nuevo').length / allPatients.length) * 100
+    },
+    {
+      level: 'En Riesgo',
+      count: allPatients.filter(p => p.level === 'En Riesgo').length,
+      percentage: (allPatients.filter(p => p.level === 'En Riesgo').length / allPatients.length) * 100
+    }
+  ],
+  avgScore: Math.round(
+    allPatients.reduce((sum, p) => sum + p.score, 0) / allPatients.length
+  ),
+  avgAttendanceRate: Math.round(
+    allPatients.reduce((sum, p) => sum + p.stats.attendanceRate, 0) / allPatients.length
+  ),
+  atRiskCount: allPatients.filter(p => p.level === 'En Riesgo' || p.stats.consecutiveMisses >= 2).length,
+  newThisMonth: allPatients.filter(p => {
+    const oneMonthAgo = subMonths(new Date(), 1);
+    return p.createdAt >= oneMonthAgo;
+  }).length,
+  activeCount: allPatients.filter(p => p.isActive).length,
+  inactiveCount: allPatients.filter(p => !p.isActive).length
+};
+
+// ==========================================
+// FUNCIONES DE BÚSQUEDA Y FILTRADO
+// ==========================================
+
+export function searchPatients(query: string): Patient[] {
+  const lowercaseQuery = query.toLowerCase();
+  
+  return allPatients.filter(patient => 
+    patient.fullName.toLowerCase().includes(lowercaseQuery) ||
+    patient.demographics.identificationNumber.includes(query) ||
+    patient.contact.phone.includes(query) ||
+    patient.contact.email.toLowerCase().includes(lowercaseQuery)
+  );
+}
+
 export function getPatientById(id: string): Patient | undefined {
-  return MOCK_PATIENTS.find(p => p.id === id);
+  return allPatients.find(p => p.id === id);
 }
 
-/**
- * Get patients by level
- */
 export function getPatientsByLevel(level: PatientLevel): Patient[] {
-  return MOCK_PATIENTS.filter(p => p.score.level === level);
+  return allPatients.filter(p => p.level === level);
 }
 
-/**
- * Get active patients
- */
-export function getActivePatients(): Patient[] {
-  return MOCK_PATIENTS.filter(p => p.status === 'active');
+export function getTopPatientsByScore(limit: number = 10): Patient[] {
+  return [...allPatients]
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit);
 }
 
-/**
- * Get random patient
- */
-export function getRandomPatient(): Patient {
-  return MOCK_PATIENTS[Math.floor(Math.random() * MOCK_PATIENTS.length)];
-}
-
-/**
- * Get patients with upcoming appointments
- */
-export function getPatientsWithUpcomingAppointments(): Patient[] {
-  return MOCK_PATIENTS.filter(p => p.nextAppointmentAt !== undefined);
+export function getAtRiskPatients(): Patient[] {
+  return allPatients.filter(
+    p => p.level === 'En Riesgo' || p.stats.consecutiveMisses >= 2
+  );
 }
