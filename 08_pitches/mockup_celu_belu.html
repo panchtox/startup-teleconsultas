@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TeleAssist – Flujo del Paciente (Mockups HTML)</title>
+  <style>
+    :root{
+      --brand:#0f7a4f; /* verde principal */
+      --brand-600:#0b5a3a;
+      --bg:#f7f8f9;
+      --chat-bg:#efe9dd; /* beige tipo WhatsApp */
+      --text:#101418;
+      --muted:#6b7280;
+      --white:#ffffff;
+      --success:#10b981;
+      --danger:#ef4444;
+      --shadow:0 10px 25px rgba(16,20,24,.08),0 2px 6px rgba(16,20,24,.06);
+      --radius:28px;
+    }
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--text);
+      background:linear-gradient(180deg,#ffffff 0%, #f3f7f5 100%);
+    }
+    .wrap{
+      max-width:1200px;
+      margin:32px auto 80px auto;
+      padding:0 16px;
+    }
+    header{
+      display:flex;align-items:center;gap:12px;justify-content:center;
+      margin-bottom:18px;
+    }
+    .logo{
+      width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+      background:var(--brand); color:#fff; font-weight:700; font-size:18px; box-shadow:var(--shadow);
+    }
+    h1{font-size:clamp(22px,3.5vw,32px);margin:0;text-align:center;font-weight:800;letter-spacing:.2px}
+    .sub{color:var(--muted);text-align:center;margin-top:6px}
+
+    /* Grid of phones */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;margin-top:28px;justify-items:center;align-items:start}
+
+    /* Phone frame */
+    .phone{position:relative;background:var(--white);border-radius:36px;padding:18px;box-shadow:var(--shadow);border:1px solid #e8ecea;aspect-ratio:9/19.5;display:flex;flex-direction:column;overflow:hidden;width:320px;max-width:100%}
+    .notch{position:absolute; top:10px; left:50%; transform:translateX(-50%);
+      width:120px; height:22px; background:#0a0a0a; border-radius:20px;opacity:.9}
+
+    /* App header (like WhatsApp) */
+    .appbar{display:flex;align-items:center;gap:10px;background:var(--brand);color:#fff;
+      border-radius:18px; padding:10px 12px; margin-top:16px}
+    .badge{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:#fff1; border:1px solid #ffffff30}
+    .title{font-weight:700;letter-spacing:.2px}
+    .status{margin-left:auto; font-size:12px; opacity:.9}
+
+    /* Chat area */
+    .chat{flex:1; margin-top:10px; background:var(--chat-bg); border-radius:16px; padding:12px; overflow:auto;
+      background-image: radial-gradient(rgba(0,0,0,.02) 1px, transparent 1px);
+      background-size: 14px 14px;
+    }
+    .msg{max-width:86%; padding:10px 12px; border-radius:14px; margin:8px 6px; line-height:1.35; font-size:14px; box-shadow:0 1px 0 rgba(0,0,0,.05)}
+    .msg.agent{background:#ffffff; align-self:flex-start; border:1px solid #e8e5e0}
+    .msg.user{background:#d2f2e3; align-self:flex-end; border:1px solid #bfe7d8}
+    .timestamp{font-size:12px;color:var(--muted); margin: 2px 10px}
+
+    /* Inline emphasis */
+    .strong{font-weight:700}
+    .pill{display:inline-block; padding:.35em .7em; border-radius:999px; border:1px solid #dbe7e2; background:#f4fbf8; font-size:12px; color:#0b5136; margin-left:6px}
+
+    /* CTA buttons */
+    .cta-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
+    .btn{appearance:none; border:none; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:700; letter-spacing:.2px; font-size:14px}
+    .btn.primary{background:var(--brand); color:#fff}
+    .btn.secondary{background:#e8f3ee; color:var(--brand-600); border:1px solid #cfe5da}
+    .btn.danger{background:#ffe8e8; color:#b42318; border:1px solid #ffd0d0}
+
+    /* Card captions under each phone */
+    .caption{margin-top:10px; text-align:center; font-size:13px; color:var(--muted)}
+
+    /* Section label for vertical infographic */
+    .section{margin:38px 0 10px; font-weight:800; color:var(--brand-600); letter-spacing:.3px}
+
+    /* Small helper classes */
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">TA</div>
+      <div>
+        <h1>TeleAssist — Recorrido del paciente</h1>
+        <div class="sub">Mockups HTML (estilo WhatsApp) — paleta verde, textos en español</div>
+      </div>
+    </header>
+
+    <!-- SECCIÓN 1: Recordatorio (24h antes) -->
+    <div class="section">1) Recordatorio (24 h antes)</div>
+    <div class="grid">
+      <figure>
+        <div class="phone" aria-label="Recordatorio 24h">
+          <div class="notch"></div>
+          <div class="appbar">
+            <div class="badge">💚</div>
+            <div class="title">TeleAssist</div>
+            <div class="status">en línea</div>
+          </div>
+          <div class="chat">
+            <div class="msg agent">
+<div class="timestamp">09:00</div>
+              <span class="strong">Recordatorio:</span> tenés una consulta programada para el <span class="strong">10 de noviembre a las 14:00</span> con la Dra. Gomez. <span class="strong">Recuerda que por asistir sumarás puntos</span>
+              <div class="cta-row">
+                <button class="btn primary">Asistiré</button>
+                <button class="btn secondary">No asistiré</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <figcaption class="caption">Recordatorio con CTAs — suma de puntos por asistencia</figcaption>
+      </figure>
+    </div>
+
+    <!-- SECCIÓN 2: Confirmación de asistencia -->
+    <div class="section">2) Confirmación (si elige “Asistiré”)</div>
+    <div class="grid">
+      <figure>
+        <div class="phone" aria-label="Confirmación de asistencia">
+          <div class="notch"></div>
+          <div class="appbar">
+            <div class="badge">💚</div>
+            <div class="title">TeleAssist</div>
+            <div class="status">en línea</div>
+          </div>
+          <div class="chat">
+            <div class="msg user">Asistiré<div class="timestamp">09:01</div></div>
+            <div class="msg agent">
+              ¡Perfecto! Te esperamos el <span class="strong">10 de noviembre a las 14:00</span>.
+              <br />Gracias por confirmar — <span class="strong">sumarás puntos</span> al asistir a tu consulta.
+              <div class="timestamp">09:01</div>
+            </div>
+          </div>
+        </div>
+        <figcaption class="caption">Confirmación cálida y breve</figcaption>
+      </figure>
+    </div>
+
+    <!-- SECCIÓN 3: Cancelación → Reprogramación / Ya no necesito la consulta -->
+    <div class="section">3) Si elige “No asistiré” → Reprogramación / Cancelación</div>
+    <div class="grid">
+      <figure>
+        <div class="phone" aria-label="Reprogramación: opciones de turno">
+          <div class="notch"></div>
+          <div class="appbar">
+            <div class="badge">💚</div>
+            <div class="title">TeleAssist</div>
+            <div class="status">en línea</div>
+          </div>
+          <div class="chat">
+            <div class="msg user">No asistiré<div class="timestamp">09:02</div></div>
+            <div class="msg agent">
+              Gracias por avisar. <span class="strong">Seleccioná un turno disponible:</span>
+              <div class="cta-row" style="margin-top:10px">
+                <button class="btn secondary">12 de noviembre — 11:00</button>
+                <button class="btn secondary">13 de noviembre — 09:30</button>
+                <button class="btn secondary">14 de noviembre — 15:00</button>
+                <button class="btn danger">Ya no necesito la consulta</button>
+              </div>
+              <div class="timestamp">09:02</div>
+            </div>
+          </div>
+        </div>
+        <figcaption class="caption">Reprogramación con 3 opciones + opción de cancelar</figcaption>
+      </figure>
+
+      <figure>
+        <div class="phone" aria-label="Reprogramación confirmada">
+          <div class="notch"></div>
+          <div class="appbar">
+            <div class="badge">💚</div>
+            <div class="title">TeleAssist</div>
+            <div class="status">en línea</div>
+          </div>
+          <div class="chat">
+            <div class="msg user">12 de noviembre — 11:00<div class="timestamp">09:03</div></div>
+            <div class="msg agent">
+              Tu consulta <span class="strong">ha sido reprogramada</span> para el <span class="strong">12 de noviembre a las 11:00</span>.
+              <br />¡Te esperamos! Reprogramaste con anticipación, <span class="strong">tu puntaje no se modifica</span>.
+              <div class="timestamp">09:03</div>
+            </div>
+          </div>
+        </div>
+        <figcaption class="caption">Reprogramación confirmada con conservación de puntaje</figcaption>
+      </figure>
+
+      <figure>
+        <div class="phone" aria-label="Cancelación final (no necesita la consulta)">
+          <div class="notch"></div>
+          <div class="appbar">
+            <div class="badge">💚</div>
+            <div class="title">TeleAssist</div>
+            <div class="status">en línea</div>
+          </div>
+          <div class="chat">
+            <div class="msg user">Ya no necesito la consulta<div class="timestamp">09:03</div></div>
+            <div class="msg agent">
+              <span class="strong">Perfecto, no reprogramaremos esta consulta.</span>
+              <br />Como avisaste con <span class="strong">24 horas</span> de anticipación, <span class="strong">no se modificará tu puntaje</span>.
+              <br /><span class="strong">¡Gracias por tu aviso!</span>
+              <div class="timestamp">09:03</div>
+            </div>
+          </div>
+        </div>
+        <figcaption class="caption">Cancelación final (sin penalización)</figcaption>
+      </figure>
+    </div>
+
+    <!-- Nota de uso -->
+    <p class="sub" style="margin-top:32px">Este archivo es estático (HTML+CSS). Podés abrirlo en cualquier navegador o incorporarlo en presentaciones.</p>
+  </div>
+</body>
+</html>
+
