@@ -16,15 +16,15 @@ Foto de fondo (opacity 20%): Médico + paciente en videollamada
 Copy
 [Logo]
 
-Recuperá $72.000 al año en horas médicas perdidas
+Recuperá hasta $70.000 al año en horas médicas perdidas
 
 Sistema de reputación + WhatsApp para reducir 
 ausentismo en telemedicina
 
 [Tagline pequeño abajo]
-De 33% a 9% de ausentismo en 90 días
+De 33% a menos del 10% de ausentismo en 90 días
 Notas del Speaker
-"Cada clínica mediana en Argentina pierde 72 mil dólares al año por un problema silencioso: los pacientes que no se presentan a sus teleconsultas. Hoy les voy a mostrar cómo reducir eso hasta en 80%."
+"Una clínica mediana en Argentina puede perder entre 50 y 100 mil dólares al año por un problema silencioso: los pacientes que no se presentan a sus teleconsultas. Hoy les voy a mostrar cómo reducir ese ausentismo hasta en 80%."
 
 SLIDE 2: EL PROBLEMA
 Visual
@@ -34,20 +34,21 @@ Split screen: Izquierda números, Derecha consecuencias
 Gráfico de barras: Pérdida anual por tamaño de clínica
 
 Copy
-El problema de los $72.000
+El problema: Decenas de miles perdidos cada año
 
 33% de pacientes no asiste a teleconsultas programadas
 
 Esto significa:
-💰 $72K/año perdidos (clínica mediana)
-📅 156 horas médicas desperdiciadas/mes  
+💰 $50K-100K/año perdidos (según tamaño clínica)
+📅 ~200 horas médicas desperdiciadas/mes  
 😤 Frustración de médicos y staff
 🏥 Menor acceso para pacientes que sí necesitan
 
 [Fuente abajo en pequeño]
+Hospital Italiano Buenos Aires (2020-2021)
 The Effectiveness of Outpatient Appointment Reminders (2010) - 13,505 citas
 Notas del Speaker
-"Un tercio de los pacientes simplemente no se presenta. Esto no es solo un problema administrativo: son 72 mil dólares que se evaporan cada año. Son 156 horas de médicos esperando. Y lo peor: hay pacientes que realmente necesitan esos turnos y no pueden acceder."
+"Un tercio de los pacientes simplemente no se presenta. Según el Hospital Italiano de Buenos Aires, el ausentismo llegó al 33% post-pandemia. Esto no es solo un problema administrativo: son decenas de miles de dólares que se evaporan cada año. Son cerca de 200 horas de médicos esperando. Y lo peor: hay pacientes que realmente necesitan esos turnos y no pueden acceder."
 
 SLIDE 3: POR QUÉ AHORA
 Visual
@@ -87,7 +88,7 @@ Copy
 3 componentes, 1 sistema
 
 1. Recordatorios inteligentes vía WhatsApp
-   92% tasa entrega | 78% lectura | 65% confirmación
+   92% tasa entrega | 78% lectura en primeros 5 min
 
 2. Sistema de reputación (como Uber)
    Score 0-100 | 5 niveles | Badges y beneficios reales
@@ -153,8 +154,8 @@ Curogram: $3M+ revenue retenido con 1.2% reducción no-show
 NexHealth: "Best system I've used, I tried 6 others"
 
 ⭐ Retención de pacientes
-Paciente fiel 5+ años = 377x más valioso
-Retener cuesta 7x menos que adquirir nuevo
+Retener cuesta 5-7x menos que adquirir nuevo paciente
+Pacientes recurrentes generan mayor valor lifetime
 Notas del Speaker
 "No estamos inventando teorías. Penn Medicine, uno de los mejores sistemas de salud de EE.UU., tiene un Nudge Unit dedicado a esto. Curogram retuvo 3 millones de dólares en un solo cliente. Y Harvard estudió que el 80% de nuestras decisiones son emocionales. Por eso los recordatorios fríos no funcionan, pero un sistema que te hace sentir parte de algo, sí."
 
@@ -180,11 +181,11 @@ Soporte       | Email          | Priority         | Dedicated CSM
 
 Ejemplo clínica 500 pacientes/mes
 Pro tier: $375 MRR | $4,500/año
-ROI: Recupera $72K, invierte $4.5K = 1,500% ROI
+ROI: Recupera $30K-80K, invierte $4.5K = 560%-1,680% ROI
 
 Free tier = lead magnet + product-led growth
 Notas del Speaker
-"Nuestro modelo es simple: te damos gratis hasta 100 pacientes para que pruebes sin riesgo. Cuando ves los resultados, upgradeas a Pro por menos de un dólar por paciente. Una clínica mediana paga 4,500 dólares al año y recupera 72 mil. El ROI se vende solo."
+"Nuestro modelo es simple: te damos gratis hasta 100 pacientes para que pruebes sin riesgo. Cuando ves los resultados, upgradeas a Pro por menos de un dólar por paciente. Una clínica mediana paga 4,500 dólares al año y puede recuperar entre 30 y 80 mil dólares reduciendo el ausentismo. El ROI es contundente."
 
 SLIDE 8: TAMAÑO DEL MERCADO
 Visual
@@ -308,10 +309,10 @@ USO DE FONDOS ($350K)
   • Accounting & admin  
   • Customer success
 
-BREAK-EVEN: Mes 24 (Q2 2027)
+BREAK-EVEN: Mes 30-33 (Q4 Año 3, 2027)
 EXIT SCENARIOS: Adquisición por plataforma ($5-10M) | Serie A ($50M+ valuation)
 Notas del Speaker
-"Pedimos 350 mil dólares que nos dan 3 años de runway. Con esto llegamos a 720 mil de revenue anual y break-even en el mes 24. El 40% va a producto porque necesitamos un equipo sólido. El 35% a ventas para cerrar partnerships. Y el 25% a operaciones porque estamos en salud regulada. Los exits más probables: adquisición por alguna plataforma grande en 3-4 años, o Serie A si decidimos escalar agresivamente a Brasil y México."
+"Pedimos 350 mil dólares que nos dan 3 años de runway. Con esto llegamos a 720 mil de revenue anual y break-even entre el mes 30 y 33, al final del año 3. El 40% va a producto porque necesitamos un equipo sólido. El 35% a ventas para cerrar partnerships. Y el 25% a operaciones porque estamos en salud regulada. Los exits más probables: adquisición por alguna plataforma grande en 3-4 años, o Serie A si decidimos escalar agresivamente a Brasil y México."
 
 SLIDE 12: EQUIPO Y VISIÓN
 Visual
