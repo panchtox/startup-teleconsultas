@@ -8,9 +8,10 @@
 
 #### 💬 Speech Sugerido
 ```
-"Buenos días. Imaginen perder $70,000 al año en horas médicas que ya pagaron, 
-solo porque los pacientes no se presentan a las teleconsultas. Eso es exactamente 
-lo que le pasa hoy a clínicas y sistemas de salud en toda Argentina.
+"Imaginen perder $70,000 al año en horas médicas que ya pagaron, 
+solo porque los pacientes no se presentan a las teleconsultas. 
+
+Eso es exactamente lo que le pasa hoy a clínicas y sistemas de salud en toda Argentina.
 
 Soy [Tu nombre] de TeleAssist, y venimos a mostrarles cómo reducir ese ausentismo 
 de 33% a menos del 10% en solo 90 días."
