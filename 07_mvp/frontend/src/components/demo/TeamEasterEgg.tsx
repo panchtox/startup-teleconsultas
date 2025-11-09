@@ -35,17 +35,17 @@ export default function TeamEasterEgg({ isOpen, onClose }: TeamEasterEggProps) {
       />
       
       {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none overflow-y-auto">
         <div 
-          className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full pointer-events-auto animate-in zoom-in-95 duration-300 overflow-hidden"
+          className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full pointer-events-auto animate-in zoom-in-95 duration-300 overflow-hidden my-8"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header con corazón animado */}
-          <div className="relative bg-gradient-to-r from-primary-600 to-green-500 p-8 text-white">
+          <div className="relative bg-gradient-to-r from-primary-600 to-green-500 p-6 text-white">
             {/* Corazón flotante de fondo */}
             <div className="absolute inset-0 overflow-hidden">
               <Heart 
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 opacity-10 animate-pulse"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 opacity-10 animate-pulse"
                 fill="currentColor"
               />
             </div>
@@ -61,26 +61,26 @@ export default function TeamEasterEgg({ isOpen, onClose }: TeamEasterEggProps) {
 
             {/* Contenido del header */}
             <div className="relative z-10 text-center">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-4 animate-bounce">
-                <Heart className="w-10 h-10" fill="currentColor" />
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-3 animate-bounce">
+                <Heart className="w-8 h-8" fill="currentColor" />
               </div>
-              <h2 className="text-3xl font-bold mb-2">
+              <h2 className="text-2xl font-bold mb-2">
                 ¡Encontraste el Easter Egg! 🥚
               </h2>
-              <p className="text-green-50 text-lg">
+              <p className="text-green-50">
                 Conocé al equipo detrás de TeleAssist
               </p>
             </div>
           </div>
 
           {/* Contenido */}
-          <div className="p-8">
-            {/* Foto del equipo */}
+          <div className="p-6">
+            {/* Foto del equipo con altura controlada */}
             <div className="mb-6 rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br from-primary-50 to-green-50">
               <img 
                 src="/team/team-photo.png" 
                 alt="Equipo TeleAssist"
-                className="w-full h-auto object-cover"
+                className="w-full h-auto max-h-[400px] object-contain"
                 onError={(e) => {
                   // Fallback si no se carga la imagen
                   const target = e.target as HTMLImageElement;
@@ -94,8 +94,8 @@ export default function TeamEasterEgg({ isOpen, onClose }: TeamEasterEggProps) {
             </div>
 
             {/* Mensaje del equipo */}
-            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 text-center">
-              <p className="text-gray-700 leading-relaxed mb-4">
+            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-5 text-center">
+              <p className="text-gray-700 leading-relaxed mb-3">
                 <strong className="text-primary-600">TeleAssist</strong> es más que tecnología: 
                 es un equipo comprometido con mejorar el acceso a la salud digital en Latinoamérica.
               </p>
@@ -112,11 +112,11 @@ export default function TeamEasterEgg({ isOpen, onClose }: TeamEasterEggProps) {
             </div>
 
             {/* Corazones decorativos */}
-            <div className="flex items-center justify-center gap-3 mt-6">
+            <div className="flex items-center justify-center gap-3 mt-5">
               {[...Array(5)].map((_, i) => (
                 <Heart
                   key={i}
-                  className="w-6 h-6 text-primary-600 animate-pulse"
+                  className="w-5 h-5 text-primary-600 animate-pulse"
                   fill="currentColor"
                   style={{ animationDelay: `${i * 0.1}s` }}
                 />
