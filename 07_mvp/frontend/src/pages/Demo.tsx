@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import TeamEasterEgg from '../components/demo/TeamEasterEgg';
 
 interface Message {
   id: number;
@@ -28,6 +29,7 @@ export default function Demo() {
   const [score, setScore] = useState(75);
   const [appointmentStatus, setAppointmentStatus] = useState('Pendiente');
   const [respondedMessages, setRespondedMessages] = useState<Set<number>>(new Set());
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
 
   const addServerLog = (action: string, detail: string) => {
     const timestamp = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -167,6 +169,12 @@ export default function Demo() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-green-50 py-8 px-4">
+      {/* Easter Egg Modal */}
+      <TeamEasterEgg 
+        isOpen={showEasterEgg} 
+        onClose={() => setShowEasterEgg(false)} 
+      />
+
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
@@ -202,11 +210,15 @@ export default function Demo() {
               {/* Notch */}
               <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-[120px] h-[22px] bg-black rounded-full opacity-90" />
 
-              {/* App Bar */}
+              {/* App Bar con Easter Egg clickeable */}
               <div className="flex items-center gap-2.5 bg-primary-600 text-white rounded-2xl p-3 mt-5">
-                <div className="w-8 h-8 rounded-lg bg-white/10 border border-white/30 flex items-center justify-center text-base">
+                <button
+                  onClick={() => setShowEasterEgg(true)}
+                  className="w-8 h-8 rounded-lg bg-white/10 border border-white/30 flex items-center justify-center text-base hover:bg-white/20 hover:scale-110 transition-all cursor-pointer"
+                  title="¿Encontraste el Easter Egg? 🥚"
+                >
                   💚
-                </div>
+                </button>
                 <div className="font-bold flex-1">TeleAssist</div>
                 <div className="text-xs opacity-90">en línea</div>
               </div>
