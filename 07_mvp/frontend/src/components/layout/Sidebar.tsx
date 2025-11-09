@@ -10,7 +10,8 @@ import {
   Award, 
   MessageCircle, 
   BarChart3,
-  Settings 
+  Settings,
+  Smartphone
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -55,6 +56,11 @@ const navItems: NavItem[] = [
     label: 'Configuración',
     href: '/settings',
     icon: Settings
+  },
+  {
+    label: 'Demo Interactiva',
+    href: '/demo',
+    icon: Smartphone
   }
 ];
 

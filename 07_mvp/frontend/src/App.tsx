@@ -8,6 +8,7 @@ import { Reputation } from '@/pages/Reputation'
 import Messages from '@/pages/Messages'
 import Reports from '@/pages/Reports'
 import { Landing } from '@/pages/Landing'
+import Demo from '@/pages/Demo'
 
 // Placeholder para otras páginas
 function Placeholder({ title }: { title: string }) {
@@ -36,6 +37,7 @@ function App() {
       <Route path="/messages" element={<DashboardLayout><Messages /></DashboardLayout>} />
       <Route path="/reports" element={<DashboardLayout><Reports /></DashboardLayout>} />
       <Route path="/settings" element={<DashboardLayout><Placeholder title="Configuración" /></DashboardLayout>} />
+      <Route path="/demo" element={<Demo />} />
     </Routes>
   )
 }
