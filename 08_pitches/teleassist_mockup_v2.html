@@ -1,0 +1,1216 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TeleAssist – Pitch Deck Inversores</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      /* Brand colors from project */
+      --brand-primary: #16a34a; /* green-600 */
+      --brand-primary-light: #22c55e; /* green-500 */
+      --brand-primary-lighter: #4ade80; /* green-400 */
+      --brand-secondary: #2563eb; /* blue-600 */
+      --brand-secondary-light: #3b82f6; /* blue-500 */
+      --brand-accent: #f97316; /* orange-500 */
+      
+      --bg-main: #ffffff;
+      --bg-light: #f0fdf4; /* green-50 */
+      --bg-gradient: linear-gradient(135deg, #f0fdf4 0%, #dbeafe 100%);
+      --text-primary: #0f172a;
+      --text-muted: #64748b;
+      --shadow: 0 20px 50px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.04);
+      --shadow-lg: 0 30px 70px rgba(0,0,0,.12), 0 8px 20px rgba(0,0,0,.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text-primary);
+      background: var(--bg-main);
+    }
+
+    /* Presentation container */
+    #presentation {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Base slide styling */
+    .step {
+      position: absolute;
+      width: 90vw;
+      max-width: 1200px;
+      height: 100vh !important;
+      padding: 40px 50px;
+      background: var(--bg-main);
+      border-radius: 24px;
+      box-shadow: var(--shadow-lg);
+      font-size: 16px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Utilities */
+    .text-center { text-align: center; }
+    .text-muted { color: var(--text-muted); }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .mb-4 { margin-bottom: 2rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mt-4 { margin-top: 2rem; }
+
+    /* Typography */
+    h1 {
+      font-size: 52px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2 {
+      font-size: 40px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      color: var(--brand-primary);
+    }
+
+    h3 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--brand-primary);
+    }
+
+    h4 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .subtitle {
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .tagline {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--brand-secondary);
+      padding: 12px 28px;
+      background: rgba(37, 99, 235, 0.08);
+      border-radius: 12px;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    /* Logo */
+    .logo {
+      width: 70px;
+      height: 70px;
+      background: var(--brand-primary);
+      color: white;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 800;
+      box-shadow: var(--shadow);
+      margin: 0 auto 24px;
+    }
+
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 20px;
+      background: var(--bg-light);
+      border-radius: 16px;
+      border: 2px solid rgba(22, 163, 74, 0.1);
+    }
+
+    .stat-value {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--brand-primary);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Features/bullets */
+    .features {
+      display: grid;
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px;
+      background: var(--bg-light);
+      border-radius: 12px;
+      border-left: 4px solid var(--brand-primary);
+    }
+
+    .feature-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .feature-content h4 {
+      margin-bottom: 6px;
+      font-size: 18px;
+    }
+
+    .feature-content p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    /* Split layout */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    /* Cards */
+    .card {
+      padding: 24px;
+      background: var(--bg-main);
+      border-radius: 16px;
+      border: 2px solid rgba(22, 163, 74, 0.1);
+      box-shadow: var(--shadow);
+    }
+
+    /* Highlight box */
+    .highlight {
+      background: linear-gradient(135deg, rgba(22, 163, 74, 0.08) 0%, rgba(37, 99, 235, 0.08) 100%);
+      padding: 24px;
+      border-radius: 16px;
+      border: 2px solid rgba(22, 163, 74, 0.2);
+      margin: 20px 0;
+    }
+
+    .highlight-big {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--brand-primary);
+      line-height: 1.2;
+    }
+
+    /* Pricing table */
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .pricing-tier {
+      padding: 24px;
+      background: var(--bg-main);
+      border-radius: 16px;
+      border: 2px solid rgba(22, 163, 74, 0.1);
+      text-align: center;
+    }
+
+    .pricing-tier.featured {
+      border-color: var(--brand-primary);
+      background: var(--bg-light);
+      transform: scale(1.05);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .pricing-tier h4 {
+      color: var(--brand-primary);
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .pricing-price {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--brand-primary);
+      margin-bottom: 6px;
+    }
+
+    .pricing-period {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    /* Market size bars */
+    .market-bars {
+      margin: 20px 0;
+    }
+
+    .market-bar {
+      margin-bottom: 16px;
+    }
+
+    .market-bar-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .market-bar-fill {
+      height: 36px;
+      background: linear-gradient(90deg, var(--brand-primary) 0%, var(--brand-primary-lighter) 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    /* Phone mockup */
+    .phone-mockup {
+      width: 240px;
+      height: 500px;
+      background: white;
+      border-radius: 28px;
+      padding: 14px;
+      box-shadow: var(--shadow-lg);
+      border: 6px solid #0a0a0a;
+      position: relative;
+      margin: 0 auto;
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 18px;
+      background: #0a0a0a;
+      border-radius: 14px;
+    }
+
+    .phone-screen {
+      height: 100%;
+      background: linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-primary) 100px, #efe9dd 100px);
+      border-radius: 18px;
+      overflow: hidden;
+      padding-top: 32px;
+    }
+
+    .phone-header {
+      padding: 12px;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .phone-badge {
+      width: 28px;
+      height: 28px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .phone-title {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .phone-chat {
+      padding: 10px;
+      background: #efe9dd;
+      height: calc(100% - 100px);
+      overflow-y: auto;
+    }
+
+    .chat-bubble {
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      max-width: 85%;
+      font-size: 13px;
+      line-height: 1.3;
+    }
+
+    .chat-bubble.agent {
+      background: white;
+      border: 1px solid #e8e5e0;
+    }
+
+    .chat-bubble.user {
+      background: #d2f2e3;
+      border: 1px solid #bfe7d8;
+      margin-left: auto;
+    }
+
+    .chat-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .chat-btn {
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .chat-btn.primary {
+      background: var(--brand-primary);
+      color: white;
+    }
+
+    .chat-btn.secondary {
+      background: #e8f3ee;
+      color: var(--brand-primary);
+    }
+
+    /* Team */
+    .team {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin: 24px 0;
+    }
+
+    .team-member {
+      text-align: center;
+    }
+
+    .team-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      font-weight: 800;
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .team-name {
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .team-role {
+      color: var(--brand-primary);
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .team-bio {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Sources */
+    .source {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+
+    /* Navigation hint */
+    .nav-hint {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      background: var(--brand-primary);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: var(--shadow);
+      z-index: 1000;
+      opacity: 0.9;
+    }
+
+    /* Strong emphasis */
+    strong {
+      color: var(--brand-primary);
+      font-weight: 700;
+    }
+
+    /* List styling */
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      padding-left: 32px;
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--brand-primary);
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    /* Competition matrix */
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 32px 0;
+    }
+
+    .matrix-item {
+      padding: 16px;
+      background: var(--bg-light);
+      border-radius: 12px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .matrix-item.us {
+      background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+      color: white;
+      font-weight: 700;
+      transform: scale(1.1);
+    }
+
+    /* Vision quote */
+    .vision-quote {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.3;
+      text-align: center;
+      color: var(--brand-primary);
+      padding: 32px;
+      background: var(--bg-light);
+      border-radius: 20px;
+      border-left: 6px solid var(--brand-primary);
+      margin: 24px 0;
+    }
+
+    /* CTA */
+    .cta {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 16px 40px;
+      background: var(--brand-primary);
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1400px) {
+      .step {
+        width: 90vw;
+        padding: 35px 45px;
+        font-size: 15px;
+      }
+      h1 { font-size: 44px; }
+      h2 { font-size: 36px; }
+      h3 { font-size: 24px; }
+      .highlight-big { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="presentation">
+
+  <!-- SLIDE 1: TÍTULO + HOOK -->
+  <div class="step">
+    <div class="logo">TA</div>
+    <h1 class="text-center">Recuperá hasta $70.000 al año<br/>en horas médicas perdidas</h1>
+    <p class="subtitle text-center">Sistema de reputación + WhatsApp para reducir ausentismo en telemedicina</p>
+    <div class="text-center">
+      <span class="tagline">De 33% a menos del 10% de ausentismo en 90 días</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: EL PROBLEMA -->
+  <div class="step">
+    <h2>El PROBLEMA</h2>
+    <div class="highlight">
+      <p class="highlight-big mb-2">33% de pacientes no asiste a teleconsultas programadas</p>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">$50-100K</div>
+        <div class="stat-label">Pérdida anual<br/>(según tamaño)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">~200h</div>
+        <div class="stat-label">Horas médicas<br/>desperdiciadas/mes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">😤</div>
+        <div class="stat-label">Frustración de<br/>médicos y staff</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">🏥</div>
+        <div class="stat-label">Menor acceso para<br/>pacientes que sí necesitan</div>
+      </div>
+    </div>
+    <p class="source">Hospital Italiano Buenos Aires (2020-2021) | The Effectiveness of Outpatient Appointment Reminders (2010) - 13,505 citas</p>
+  </div>
+
+  <!-- SLIDE 3: POR QUÉ AHORA -->
+  <div class="step">
+    <h2>LA OPORTUNIDAD</h2>
+    <div class="split">
+      <div>
+        <h3 class="mb-3">Telemedicina LATAM</h3>
+        <div class="highlight">
+          <p class="highlight-big">$2.52B <span style="font-size: 32px; color: var(--text-muted);">→</span> $10.52B</p>
+          <p style="font-size: 20px; color: var(--brand-secondary); font-weight: 600;">(2024 → 2033)</p>
+          <p style="font-size: 24px; color: var(--text-muted); margin-top: 12px;">CAGR 17.23%</p>
+        </div>
+      </div>
+      <div>
+        <h3 class="mb-3">Argentina post-pandemia:</h3>
+        <ul>
+          <li>Marco legal desde 2012, adopción acelerada desde 2020</li>
+          <li><strong>62%</strong> difiere atención por accesibilidad (McKinsey, 4,276 personas)</li>
+          <li><strong>86%</strong> del gasto = enfermedades crónicas (seguimiento continuo)</li>
+        </ul>
+        <div class="highlight mt-3">
+          <p style="font-size: 22px; font-weight: 700; color: var(--brand-primary);">Oportunidad: Ser el estándar antes que el mercado madure</p>
+        </div>
+      </div>
+    </div>
+    <p class="source">Latin America Telemedicine Market Report 2024 | McKinsey Healthcare Consumer Behavior LATAM 2024</p>
+  </div>
+
+  <!-- SLIDE 4: LA SOLUCIÓN -->
+  <div class="step">
+    <h2>LA SOLUCIÓN</h2>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">📱</div>
+        <div class="feature-content">
+          <h4>1. Recordatorios inteligentes vía WhatsApp</h4>
+          <p><strong>92%</strong> tasa entrega | <strong>78%</strong> lectura en primeros 5 min</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⭐</div>
+        <div class="feature-content">
+          <h4>2. Sistema de reputación (como Uber)</h4>
+          <p>Score 0-100 | 5 niveles | Badges y beneficios reales</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-content">
+          <h4>3. IA conversacional (GPT-4)</h4>
+          <p>Respuestas naturales | Reprogramación asistida | Soporte 24/7</p>
+        </div>
+      </div>
+    </div>
+    <div class="highlight">
+      <p class="highlight-big">Resultado: 40-80% reducción de ausentismo</p>
+      <p style="font-size: 18px; color: var(--text-muted); margin-top: 12px;">(Validado con Curogram, NexHealth, Penn Medicine)</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: CÓMO FUNCIONA (DEMO VISUAL) -->
+  <div class="step">
+    <h2 class="mb-3">La experiencia completa</h2>
+    <div class="split">
+      <div>
+        <h3 class="mb-3">Paciente (WhatsApp)</h3>
+        <div class="phone-mockup">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-header">
+              <div class="phone-badge">💚</div>
+              <div class="phone-title">TeleAssist</div>
+            </div>
+            <div class="phone-chat">
+              <div class="chat-bubble agent">
+                <strong>Recordatorio:</strong> tenés una consulta programada para el <strong>10 de noviembre a las 14:00</strong> con la Dra. Gomez.
+                <div class="chat-buttons">
+                  <button class="chat-btn primary">Asistiré</button>
+                  <button class="chat-btn secondary">No asistiré</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 class="mb-3">Clínica (Dashboard)</h3>
+        <div class="features">
+          <div class="feature">
+            <div class="feature-icon">1️⃣</div>
+            <div class="feature-content">
+              <h4>Programa consulta en su sistema actual</h4>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">2️⃣</div>
+            <div class="feature-content">
+              <h4>Ve confirmación en tiempo real</h4>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">3️⃣</div>
+            <div class="feature-content">
+              <h4>Tracking automático de reputación</h4>
+              <p>Asiste → +10 puntos | No asiste → -20 puntos</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">4️⃣</div>
+            <div class="feature-content">
+              <h4>Reportes y métricas de engagement</h4>
+            </div>
+          </div>
+        </div>
+        <div class="highlight mt-3">
+          <p style="font-size: 20px; font-weight: 700; color: var(--brand-primary);">⚡ Plug & play: 2 semanas de implementación</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: POR QUÉ FUNCIONA (CIENCIA) -->
+  <div class="step">
+    <h2>Respaldado por neurociencia<br/>y datos reales</h2>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🧠</div>
+        <div class="feature-content">
+          <h4>Behavioral Economics (Harvard MPH)</h4>
+          <p><strong>80%</strong> de decisiones son emocionales, no racionales. Los humanos respondemos a recompensas inmediatas.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎮</div>
+        <div class="feature-content">
+          <h4>Gamificación aplicada a salud</h4>
+          <p>Penn Medicine: <strong>+11%</strong> vacunación con mensaje optimizado | Sidekick Health: Partnership con devs de videojuegos</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <div class="feature-content">
+          <h4>Resultados comerciales probados</h4>
+          <p>Curogram: <strong>$3M+</strong> revenue retenido con 1.2% reducción no-show | NexHealth: "Best system I've used, I tried 6 others"</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⭐</div>
+        <div class="feature-content">
+          <h4>Retención de pacientes</h4>
+          <p>Retener cuesta <strong>5-7x menos</strong> que adquirir nuevo paciente | Pacientes recurrentes generan mayor valor lifetime</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: MODELO DE NEGOCIO -->
+  <div class="step">
+    <h2>Freemium B2B con<br/>conversión probada</h2>
+    <div class="pricing">
+      <div class="pricing-tier">
+        <h4>Free</h4>
+        <div class="pricing-price">$0</div>
+        <div class="pricing-period">hasta 100 pac/mes</div>
+        <ul style="text-align: left; font-size: 14px;">
+          <li>WhatsApp ✓</li>
+          <li>Reputación básico</li>
+          <li>Reportes básicos</li>
+          <li>Soporte por email</li>
+        </ul>
+      </div>
+      <div class="pricing-tier featured">
+        <h4>Pro ⭐</h4>
+        <div class="pricing-price">$0.50-1</div>
+        <div class="pricing-period">por paciente/mes</div>
+        <ul style="text-align: left; font-size: 14px;">
+          <li>WhatsApp ✓</li>
+          <li>Reputación completo</li>
+          <li>IA/GPT-4 ✓</li>
+          <li>Reportes avanzados</li>
+          <li>Soporte prioritario</li>
+        </ul>
+      </div>
+      <div class="pricing-tier">
+        <h4>Enterprise</h4>
+        <div class="pricing-price">Custom</div>
+        <div class="pricing-period">volumen alto</div>
+        <ul style="text-align: left; font-size: 14px;">
+          <li>Todo de Pro +</li>
+          <li>Customización</li>
+          <li>BI Integration</li>
+          <li>Dedicated CSM</li>
+        </ul>
+      </div>
+    </div>
+    <div class="highlight">
+      <p style="font-size: 24px; font-weight: 700; margin-bottom: 16px;">Ejemplo: Clínica 500 pacientes/mes</p>
+      <p style="font-size: 20px;">Pro tier: <strong>$375 MRR</strong> | <strong>$4,500/año</strong></p>
+      <p style="font-size: 32px; color: var(--brand-primary); font-weight: 800; margin-top: 16px;">ROI: Recupera $30K-80K, invierte $4.5K = 560%-1,680% ROI</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: TAMAÑO DEL MERCADO -->
+  <div class="step">
+    <h2>EL MERCADO</h2>
+    <div class="split" style="gap: 32px;">
+      <div>
+        <h3 class="mb-3">$156M TAM solo en Argentina - Cálculo Bottom-Up</h3>
+        <div class="features">
+          <div class="feature">
+            <div class="feature-icon">👨‍⚕️</div>
+            <div class="feature-content">
+              <h4>130,000 médicos sector privado</h4>
+              <p style="font-size: 14px;">Total Argentina: ~200K médicos | 65% privado</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">📅</div>
+            <div class="feature-content">
+              <h4>1,000 consultas/médico/año</h4>
+              <p style="font-size: 14px;">~230 días × 4-5 consultas/día</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">💻</div>
+            <div class="feature-content">
+              <h4>10% migra a telemedicina (3 años)</h4>
+              <p style="font-size: 14px;">= 13M teleconsultas anuales</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">💰</div>
+            <div class="feature-content">
+              <h4>$1/consulta/mes × 12 meses</h4>
+              <p style="font-size: 14px;">Pricing promedio TeleAssist</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 class="mb-3">Mercados Direccionables</h3>
+        <div class="market-bars">
+          <div class="market-bar">
+            <div class="market-bar-label">
+              <span><strong>TAM</strong> (Total Addressable)</span>
+              <span><strong>$156M</strong></span>
+            </div>
+            <div class="market-bar-fill" style="width: 100%;">
+              13M teleconsultas × $1 × 12
+            </div>
+          </div>
+          <div class="market-bar">
+            <div class="market-bar-label">
+              <span><strong>SAM</strong> (Serviceable Available)</span>
+              <span><strong>$15.6M</strong></span>
+            </div>
+            <div class="market-bar-fill" style="width: 60%; background: linear-gradient(90deg, var(--brand-secondary) 0%, #60a5fa 100%);">
+              1% ya son telemedicina HOY
+            </div>
+          </div>
+          <div class="market-bar">
+            <div class="market-bar-label">
+              <span><strong>Año 1</strong> (0.5% SAM)</span>
+              <span><strong>$78K</strong></span>
+            </div>
+            <div class="market-bar-fill" style="width: 25%; background: var(--brand-accent);">
+              ~130 clientes
+            </div>
+          </div>
+          <div class="market-bar">
+            <div class="market-bar-label">
+              <span><strong>Año 2</strong> (2% SAM)</span>
+              <span><strong>$312K</strong></span>
+            </div>
+            <div class="market-bar-fill" style="width: 35%; background: var(--brand-accent);">
+              Partnerships
+            </div>
+          </div>
+          <div class="market-bar">
+            <div class="market-bar-label">
+              <span><strong>Año 3</strong> (6% SAM)</span>
+              <span><strong>$936K</strong></span>
+            </div>
+            <div class="market-bar-fill" style="width: 50%; background: var(--brand-accent);">
+              Break-even
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="highlight mt-4">
+      <p style="font-size: 28px; font-weight: 700;">🌎 Expansión Año 4-5</p>
+      <p style="font-size: 22px; margin-top: 12px;">🇧🇷 Brasil ($780M TAM, 5x ARG) | 🇲🇽 México ($468M TAM, 3x ARG)</p>
+    </div>
+    <p class="source">Ministerio de Salud Argentina | Confederación Médica Rep. Argentina | Cálculo bottom-up basado en médicos activos sector privado</p>
+  </div>
+
+  <!-- SLIDE 9: COMPETENCIA Y DIFERENCIACIÓN -->
+  <div class="step">
+    <h2>NUESTRO DIFERENCIAL</h2>
+    <div class="split">
+      <div>
+        <h3 class="mb-2">Competencia Global (USA)</h3>
+        <div class="card mb-3">
+          <p><strong>Curogram, NexHealth, SimplePractice, Solutionreach</strong></p>
+          <ul style="margin-top: 12px; font-size: 14px;">
+            <li style="color: var(--brand-accent);">❌ No localizados (inglés)</li>
+            <li style="color: var(--brand-accent);">❌ Pricing prohibitivo LATAM</li>
+            <li style="color: var(--brand-accent);">❌ No integración WhatsApp</li>
+          </ul>
+        </div>
+        <h3 class="mb-2">Competencia Local (ARG)</h3>
+        <div class="card">
+          <p><strong>Medicus, OSDE, CRMs genéricos</strong></p>
+          <ul style="margin-top: 12px; font-size: 14px;">
+            <li style="color: var(--brand-accent);">❌ Solo recordatorios básicos</li>
+            <li style="color: var(--brand-accent);">❌ Sin gamificación</li>
+            <li style="color: var(--brand-accent);">❌ No especializados salud</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3 class="mb-2">Nuestro diferenciador</h3>
+        <div class="features">
+          <div class="feature">
+            <div class="feature-icon">🔌</div>
+            <div class="feature-content">
+              <h4>Plug & play</h4>
+              <p>No reemplazamos, complementamos</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">💬</div>
+            <div class="feature-content">
+              <h4>WhatsApp-first</h4>
+              <p>98% penetración en Argentina</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">⭐</div>
+            <div class="feature-content">
+              <h4>Sistema reputación</h4>
+              <p>Único en LATAM health</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">💰</div>
+            <div class="feature-content">
+              <h4>Pricing LATAM</h4>
+              <p>1/10 del costo USA</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">⚖️</div>
+            <div class="feature-content">
+              <h4>Regulación local</h4>
+              <p>Conocemos marco legal argentino</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: GO-TO-MARKET -->
+  <div class="step">
+    <h2>PLAN DE IMPLEMENTACIÓN<br />3 canales de adquisición<br/>ejecución de 18 meses</h2>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">1️⃣</div>
+        <div class="feature-content">
+          <h4>FASE 1: Validación (Meses 1-6)</h4>
+          <p><strong>Canal:</strong> Outbound directo a 50 clínicas privadas AMBA</p>
+          <p><strong>Meta:</strong> 10 pilotos × $500 MRR = <strong>$5K MRR</strong></p>
+          <p><strong>KPI:</strong> 25% conversión demo → pilot</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">2️⃣</div>
+        <div class="feature-content">
+          <h4>FASE 2: Partnerships (Meses 7-12)</h4>
+          <p><strong>Canal:</strong> Alianzas con plataformas telemedicina</p>
+          <p style="font-size: 15px;">Medicus Telemedicina | OSDE | Swiss Medical</p>
+          <p><strong>Meta:</strong> 2 partnerships × 1,000 pac/mes = <strong>$20K MRR</strong></p>
+          <p><strong>KPI:</strong> Revenue share 70/30</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">3️⃣</div>
+        <div class="feature-content">
+          <h4>FASE 3: Product-Led Growth (Meses 13-18)</h4>
+          <p><strong>Canal:</strong> Freemium viral + marketing digital</p>
+          <p style="font-size: 15px;">Free tier en website | Casos de éxito | LinkedIn + Google Ads</p>
+          <p><strong>Meta:</strong> 500 signups/mes, 15% conversión = <strong>$56K MRR</strong></p>
+        </div>
+      </div>
+    </div>
+    <div class="highlight">
+      <p style="font-size: 32px; font-weight: 800; color: var(--brand-primary);">Total Mes 18: $78K MRR | $936K ARR</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: FINANCIALS Y ASK -->
+  <div class="step">
+    <h2>$350K seed para<br/>36 meses de runway</h2>
+    <div class="split">
+      <div>
+        <h3 class="mb-3">Proyección 3 años</h3>
+        <div class="stats" style="grid-template-columns: 1fr;">
+          <div class="stat">
+            <div class="stat-value" style="font-size: 32px;">Año 1</div>
+            <div class="stat-label">$78K revenue | -$200K burn | ~130 clientes</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" style="font-size: 32px;">Año 2</div>
+            <div class="stat-label">$312K revenue | -$80K burn | Partnerships activos</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" style="font-size: 32px; color: var(--brand-secondary);">Año 3 ✓</div>
+            <div class="stat-label">$936K revenue | +$150K profit | Break-even</div>
+          </div>
+        </div>
+        <div class="highlight mt-3">
+          <p style="font-size: 20px; font-weight: 700;">BREAK-EVEN: Mes 30-33 (Q4 Año 3, 2027)</p>
+          <p style="font-size: 16px; margin-top: 8px; color: var(--text-muted);">EXIT: Adquisición $5-10M | Serie A $50M+ valuation</p>
+        </div>
+      </div>
+      <div>
+        <h3 class="mb-3">Uso de fondos ($350K)</h3>
+        <div class="features">
+          <div class="feature">
+            <div class="feature-icon">💻</div>
+            <div class="feature-content">
+              <h4>Producto & Tech (40%) - $140K</h4>
+              <p style="font-size: 14px;">2 devs full-time 18 meses | Infraestructura cloud (AWS) | Licencias GPT-4, WhatsApp Business API</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">📈</div>
+            <div class="feature-content">
+              <h4>Sales & Marketing (35%) - $122K</h4>
+              <p style="font-size: 14px;">1 BDR outbound 12 meses | Campaigns digitales | Eventos industria</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">👔</div>
+            <div class="feature-content">
+              <h4>Operaciones (25%) - $88K</h4>
+              <p style="font-size: 14px;">Legal & compliance (regulación salud) | Accounting & admin | Customer success</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: EQUIPO Y VISIÓN -->
+  <div class="step">
+    <h2 class="mb-3">El equipo para ejecutar</h2>
+    <div class="team">
+      <div class="team-member">
+        <div class="team-avatar">F</div>
+        <div class="team-name">Founder & CEO</div>
+        <div class="team-role">Product • Healthcare Ops</div>
+        <div class="team-bio">Experiencia en healthtech y operaciones hospitalarias. Red en sector privado ARG.</div>
+      </div>
+      <div class="team-member">
+        <div class="team-avatar">C</div>
+        <div class="team-name">Co-founder & CTO</div>
+        <div class="team-role">Architecture • AI/ML</div>
+        <div class="team-bio">Stack: Node.js, React, PostgreSQL. Experiencia en scale-ups y sistemas distribuidos.</div>
+      </div>
+      <div class="team-member">
+        <div class="team-avatar">A</div>
+        <div class="team-name">Advisors</div>
+        <div class="team-role">Médicos • Legal • Finance</div>
+        <div class="team-bio">Director médico hospital reconocido. Abogado regulación salud. Ex-CFO healthtech.</div>
+      </div>
+    </div>
+    <div class="vision-quote mt-4">
+      "Reducir ausentismo es solo el comienzo.<br/><br/>
+      Nuestra visión: Ser el estándar de reputación del paciente en Latinoamérica. El 'Uber Score' que toda plataforma de salud integra."
+    </div>
+    <div class="cta">
+      <p style="font-size: 24px; font-weight: 700; margin-bottom: 20px; color: var(--brand-primary);">Acompañanos a construir el futuro de la salud en LATAM</p>
+      <a href="mailto:contacto@teleassist.com" class="cta-button">Contactar →</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation hint -->
+<div class="nav-hint">
+  Navegación: ← → o click para avanzar
+</div>
+
+<!-- Custom presentation script (no external dependencies) -->
+<script>
+(function() {
+  const slides = document.querySelectorAll('.step');
+  let currentSlide = 0;
+  const navHint = document.querySelector('.nav-hint');
+  
+  // Hide all slides except first
+  slides.forEach((slide, index) => {
+    if (index !== 0) {
+      slide.style.display = 'none';
+    }
+  });
+  
+  function showSlide(index) {
+    // Hide current
+    slides[currentSlide].style.display = 'none';
+    
+    // Show new
+    currentSlide = index;
+    slides[currentSlide].style.display = 'flex';
+    
+    // Smooth fade in
+    slides[currentSlide].style.opacity = '0';
+    setTimeout(() => {
+      slides[currentSlide].style.transition = 'opacity 0.5s ease-in-out';
+      slides[currentSlide].style.opacity = '1';
+    }, 10);
+  }
+  
+  function nextSlide() {
+    if (currentSlide < slides.length - 1) {
+      showSlide(currentSlide + 1);
+    }
+  }
+  
+  function prevSlide() {
+    if (currentSlide > 0) {
+      showSlide(currentSlide - 1);
+    }
+  }
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      nextSlide();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      prevSlide();
+    }
+  });
+  
+  // Click navigation
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.cta-button') && !e.target.closest('button')) {
+      nextSlide();
+      
+      // Hide nav hint after first click
+      if (navHint) {
+        navHint.style.opacity = '0';
+        setTimeout(() => {
+          navHint.style.display = 'none';
+        }, 300);
+      }
+    }
+  });
+  
+  // Add slide counter
+  const counter = document.createElement('div');
+  counter.style.cssText = 'position: fixed; bottom: 40px; left: 40px; background: rgba(22, 163, 74, 0.9); color: white; padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; z-index: 1000;';
+  document.body.appendChild(counter);
+  
+  function updateCounter() {
+    counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+  }
+  updateCounter();
+  
+  // Update counter on navigation
+  const originalShowSlide = showSlide;
+  showSlide = function(index) {
+    originalShowSlide(index);
+    updateCounter();
+  };
+})();
+</script>
+
+</body>
+</html>
