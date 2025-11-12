@@ -178,12 +178,12 @@ async function handleChat(req, res) {
 
     // Llamada inicial a GitHub Models con tools (formato nuevo)
     let response = await client.chat.completions.create({
-      model: 'gpt-4o-mini', // Modelo High tier: 10 RPM, 50 RPD
+      model: 'claude-3-5-sonnet-20241022', // Claude Sonnet - mejor para function calling
       messages: messages,
       tools: TOOLS, // Tools en vez de functions
       tool_choice: 'auto', // El modelo decide cuándo llamar tools
       temperature: 0.7,
-      max_tokens: 800, // Aumentado para respuestas con ROI
+      max_tokens: 1600, // Claude necesita más tokens
       top_p: 0.9
     });
 
@@ -211,10 +211,10 @@ async function handleChat(req, res) {
       
       // Segunda llamada al LLM para que interprete el resultado
       response = await client.chat.completions.create({
-        model: 'gpt-4o-mini',
+        model: 'claude-3-5-sonnet-20241022',
         messages: messages,
         temperature: 0.7,
-        max_tokens: 800,
+        max_tokens: 1600,
         top_p: 0.9
       });
       
@@ -230,7 +230,7 @@ async function handleChat(req, res) {
 
     return res.json({
       message: assistantMessage.content,
-      model: 'gpt-4o-mini',
+      model: 'claude-3-5-sonnet-20241022',
       toolCalled: !!(assistantMessage.tool_calls && assistantMessage.tool_calls.length > 0),
       usage: {
         promptTokens: totalUsage.prompt_tokens,
@@ -268,8 +268,8 @@ async function healthCheck(req, res) {
     return res.json({
       status: 'ok',
       chatEnabled: hasToken,
-      model: 'gpt-4o-mini',
-      provider: 'GitHub Models',
+      model: 'claude-3-5-sonnet-20241022',
+      provider: 'GitHub Models (Anthropic)',
       toolsAvailable: TOOLS.map(t => t.function.name)
     });
   } catch (error) {
