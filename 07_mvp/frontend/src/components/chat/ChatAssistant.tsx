@@ -43,6 +43,8 @@ export function ChatAssistant() {
 
     try {
       const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
+      console.log('🔍 API_BASE:', API_BASE); // Debug
+      
       const response = await fetch(`${API_BASE}/chat`, {
         method: 'POST',
         headers: {
@@ -95,12 +97,17 @@ export function ChatAssistant() {
       const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
       setError(errorMessage);
       
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
+      const backendInfo = API_BASE === '/api' 
+        ? 'Desarrollo: Usando proxy Vite (/api → http://localhost:3001)'
+        : `Producción: ${API_BASE}`;
+      
       // Agregar mensaje de error visible
       setMessages([
         ...newMessages,
-        {
-          role: 'assistant',
-          content: `❌ Lo siento, hubo un error: ${errorMessage}\n\n¿El backend está corriendo? Verificá que:\n1. Backend esté en http://localhost:3001 (PORT=3001)\n2. GITHUB_TOKEN esté configurado en el .env\n3. En dev, Vite proxya /api → 3001`
+        { 
+          role: 'assistant', 
+          content: `❌ Lo siento, hubo un error: ${errorMessage}\n\nBackend configurado: ${backendInfo}\n\nVerificá:\n1. Backend esté corriendo en Render\n2. Variable VITE_API_BASE_URL en Vercel\n3. CORS habilitado en el backend` 
         }
       ]);
     } finally {
