@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { DashboardLayout } from '@/components/layout'
+import { ChatAssistant } from '@/components/chat'
 import DashboardPage from '@/pages/Dashboard'
 import PatientsPage from '@/pages/Patients'
 import PatientProfilePage from '@/pages/PatientProfile'
@@ -22,23 +23,28 @@ function Placeholder({ title }: { title: string }) {
 
 function App() {
   return (
-    <Routes>
-      {/* Public routes */}
-      <Route path="/" element={<Landing />} />
-      <Route path="/landing" element={<Landing />} />
-      
-      {/* Protected routes with DashboardLayout */}
-      <Route path="/login" element={<DashboardLayout><DashboardPage /></DashboardLayout>} />
-      <Route path="/dashboard" element={<DashboardLayout><DashboardPage /></DashboardLayout>} />
-      <Route path="/patients" element={<DashboardLayout><PatientsPage /></DashboardLayout>} />
-      <Route path="/patients/:id" element={<DashboardLayout><PatientProfilePage /></DashboardLayout>} />
-      <Route path="/appointments" element={<DashboardLayout><Appointments /></DashboardLayout>} />
-      <Route path="/reputation" element={<DashboardLayout><Reputation /></DashboardLayout>} />
-      <Route path="/messages" element={<DashboardLayout><Messages /></DashboardLayout>} />
-      <Route path="/reports" element={<DashboardLayout><Reports /></DashboardLayout>} />
-      <Route path="/settings" element={<DashboardLayout><Placeholder title="Configuración" /></DashboardLayout>} />
-      <Route path="/demo" element={<Demo />} />
-    </Routes>
+    <>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<Landing />} />
+        <Route path="/landing" element={<Landing />} />
+        
+        {/* Protected routes with DashboardLayout */}
+        <Route path="/login" element={<DashboardLayout><DashboardPage /></DashboardLayout>} />
+        <Route path="/dashboard" element={<DashboardLayout><DashboardPage /></DashboardLayout>} />
+        <Route path="/patients" element={<DashboardLayout><PatientsPage /></DashboardLayout>} />
+        <Route path="/patients/:id" element={<DashboardLayout><PatientProfilePage /></DashboardLayout>} />
+        <Route path="/appointments" element={<DashboardLayout><Appointments /></DashboardLayout>} />
+        <Route path="/reputation" element={<DashboardLayout><Reputation /></DashboardLayout>} />
+        <Route path="/messages" element={<DashboardLayout><Messages /></DashboardLayout>} />
+        <Route path="/reports" element={<DashboardLayout><Reports /></DashboardLayout>} />
+        <Route path="/settings" element={<DashboardLayout><Placeholder title="Configuración" /></DashboardLayout>} />
+        <Route path="/demo" element={<Demo />} />
+      </Routes>
+
+      {/* Chat Assistant - Aparece en todas las páginas del dashboard */}
+      <ChatAssistant />
+    </>
   )
 }
 

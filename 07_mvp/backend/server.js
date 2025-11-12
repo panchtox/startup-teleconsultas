@@ -1,14 +1,16 @@
 /**
  * ========================================
- * SERVIDOR EXPRESS - WEBHOOK WHATSAPP
+ * SERVIDOR EXPRESS - WEBHOOK WHATSAPP + CHAT
  * ========================================
  * 
- * Backend para demo TeleAssist con Meta WhatsApp API
+ * Backend para demo TeleAssist con Meta WhatsApp API + GitHub Models Chat
  * 
  * Endpoints:
  * - GET /webhook  -> Verificación inicial de Meta
  * - POST /webhook -> Recepción de mensajes de pacientes
  * - POST /api/send-demo-message -> Envío manual para demo
+ * - POST /api/chat -> Chat con LLM sobre TeleAssist
+ * - GET /api/chat/health -> Health check del chat
  * 
  * Autor: TeleAssist
  * Fecha: Noviembre 2025
@@ -22,6 +24,7 @@ require('dotenv').config();
 const { verifyWebhook } = require('./utils/webhookVerification');
 const { sendTextMessage, sendButtonMessage, markMessageAsRead } = require('./services/metaWhatsAppService');
 const { processIncomingMessage } = require('./services/autoResponseService');
+const { handleChat, healthCheck: chatHealthCheck } = require('./routes/chat');
 
 // ========================================
 // CONFIGURACIÓN EXPRESS
@@ -179,6 +182,16 @@ app.post('/api/send-demo-message', async (req, res) => {
 });
 
 // ========================================
+// ENDPOINTS: CHAT CON LLM
+// ========================================
+
+// POST /api/chat - Enviar mensaje al chat
+app.post('/api/chat', handleChat);
+
+// GET /api/chat/health - Health check del servicio de chat
+app.get('/api/chat/health', chatHealthCheck);
+
+// ========================================
 // ENDPOINT: Health Check
 // ========================================
 app.get('/health', (req, res) => {
@@ -200,7 +213,9 @@ app.get('/', (req, res) => {
       'GET /webhook': 'Verificación del webhook',
       'POST /webhook': 'Recepción de mensajes',
       'POST /api/send-demo-message': 'Envío manual para demo',
-      'GET /health': 'Health check'
+      'POST /api/chat': 'Chat con LLM sobre TeleAssist',
+      'GET /api/chat/health': 'Health check del chat',
+      'GET /health': 'Health check general'
     }
   });
 });
@@ -210,10 +225,11 @@ app.get('/', (req, res) => {
 // ========================================
 app.listen(PORT, () => {
   console.log('\n🚀 ========================================');
-  console.log('🏥 TeleAssist WhatsApp Backend');
+  console.log('🏥 TeleAssist WhatsApp Backend + Chat');
   console.log('========================================');
   console.log(`✅ Servidor corriendo en puerto ${PORT}`);
   console.log(`📡 Webhook URL: http://localhost:${PORT}/webhook`);
+  console.log(`💬 Chat API: http://localhost:${PORT}/api/chat`);
   console.log(`💊 Health check: http://localhost:${PORT}/health`);
   console.log('========================================\n');
 
@@ -232,6 +248,14 @@ app.listen(PORT, () => {
     console.warn('   Revisá el archivo .env\n');
   } else {
     console.log('✅ Todas las variables de entorno configuradas\n');
+  }
+
+  // Verificar configuración del chat
+  if (!process.env.GITHUB_TOKEN) {
+    console.warn('⚠️  ADVERTENCIA: GITHUB_TOKEN no configurado');
+    console.warn('   El chat con LLM no funcionará hasta que agregues tu token\n');
+  } else {
+    console.log('✅ Chat con LLM habilitado (GitHub Models)\n');
   }
 });
 

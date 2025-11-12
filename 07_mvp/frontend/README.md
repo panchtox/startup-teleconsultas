@@ -254,6 +254,22 @@ npm run type-check
 # Cmd/Ctrl + Shift + P > "TypeScript: Restart TS Server"
 ```
 
+## 🚀 Despliegue en Vercel (Producción)
+
+Para que el chat de IA funcione en producción, el frontend debe llamar a un backend accesible públicamente.
+
+- En desarrollo local, Vite proxya `'/api'` hacia `http://localhost:3001` (ver `vite.config.ts`).
+- En producción (Vercel), configurá la variable de entorno `VITE_API_BASE_URL` en el proyecto del frontend:
+  - Ejemplo: `https://tu-backend-publico.com/api`
+
+Pasos sugeridos:
+- Desplegar el backend (`07_mvp/backend`) en un servicio como Render/Railway.
+- Habilitar CORS en el backend (ya está configurado con `cors()`).
+- En Vercel, agregar `VITE_API_BASE_URL` apuntando a la URL pública del backend.
+
+Notas:
+- El `vercel.json` del frontend reescribe todas las rutas al `index.html` para SPA; por eso las rutas relativas `/api/*` no funcionarán a menos que el backend esté en el mismo proyecto. Usar `VITE_API_BASE_URL` evita este problema.
+
 ## 📚 Recursos
 
 ### Documentación
