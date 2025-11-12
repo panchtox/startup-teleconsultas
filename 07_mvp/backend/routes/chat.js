@@ -52,38 +52,41 @@ NUNCA, bajo ninguna circunstancia, hagas cálculos de ROI manualmente. Tu rol es
 
 Sé conciso, profesional y enfocado en ayudar al usuario a usar TeleAssist eficientemente.`;
 
-// Definición de funciones disponibles para el LLM
-const FUNCTIONS = [
+// Definición de tools (formato nuevo de OpenAI) para function calling
+const TOOLS = [
   {
-    name: 'calculate_roi',
-    description: 'OBLIGATORIO: Usa esta función SIEMPRE que el usuario pregunte sobre dinero, ahorros, ROI, recuperación de pacientes, cuánto gana, cuánto vale la pena, beneficios económicos, o cuánto implica económicamente. Esta función calcula TODO: pacientes recuperados, ingresos adicionales, costo de TeleAssist, ROI neto, múltiplo de retorno. NO hagas cálculos manuales. La función calcula automáticamente el costo de TeleAssist según el número de pacientes.',
-    parameters: {
-      type: 'object',
-      properties: {
-        monthlyAppointments: {
-          type: 'number',
-          description: 'Número total de consultas mensuales programadas (incluye las que asisten y las que no asisten)'
+    type: 'function',
+    function: {
+      name: 'calculate_roi',
+      description: 'OBLIGATORIO: Usa esta función SIEMPRE que el usuario pregunte sobre dinero, ahorros, ROI, recuperación de pacientes, cuánto gana, cuánto vale la pena, beneficios económicos, o cuánto implica económicamente. Esta función calcula TODO: pacientes recuperados, ingresos adicionales, costo de TeleAssist, ROI neto, múltiplo de retorno. NO hagas cálculos manuales. La función calcula automáticamente el costo de TeleAssist según el número de pacientes.',
+      parameters: {
+        type: 'object',
+        properties: {
+          monthlyAppointments: {
+            type: 'number',
+            description: 'Número total de consultas mensuales programadas (incluye las que asisten y las que no asisten)'
+          },
+          revenuePerAppointment: {
+            type: 'number',
+            description: 'Ingreso que recibe el cliente por cada consulta realizada (en dólares o pesos)'
+          },
+          costPerAppointment: {
+            type: 'number',
+            description: 'Costo que el cliente paga al médico por cada consulta (honorarios médicos en dólares o pesos)'
+          },
+          currentNoShowRate: {
+            type: 'number',
+            description: 'Tasa actual de ausentismo como decimal (ej: 0.33 para 33%). Si no se proporciona, usa 0.33 (promedio de la industria)',
+            default: 0.33
+          },
+          targetNoShowRate: {
+            type: 'number',
+            description: 'Tasa objetivo de ausentismo con TeleAssist como decimal (ej: 0.08 para 8%). Si no se proporciona, usa 0.08',
+            default: 0.08
+          }
         },
-        revenuePerAppointment: {
-          type: 'number',
-          description: 'Ingreso que recibe el cliente por cada consulta realizada (en dólares o pesos)'
-        },
-        costPerAppointment: {
-          type: 'number',
-          description: 'Costo que el cliente paga al médico por cada consulta (honorarios médicos en dólares o pesos)'
-        },
-        currentNoShowRate: {
-          type: 'number',
-          description: 'Tasa actual de ausentismo como decimal (ej: 0.33 para 33%). Si no se proporciona, usa 0.33 (promedio de la industria)',
-          default: 0.33
-        },
-        targetNoShowRate: {
-          type: 'number',
-          description: 'Tasa objetivo de ausentismo con TeleAssist como decimal (ej: 0.08 para 8%). Si no se proporciona, usa 0.08',
-          default: 0.08
-        }
-      },
-      required: ['monthlyAppointments', 'revenuePerAppointment', 'costPerAppointment']
+        required: ['monthlyAppointments', 'revenuePerAppointment', 'costPerAppointment']
+      }
     }
   }
 ];
@@ -156,12 +159,12 @@ async function handleChat(req, res) {
       { role: 'user', content: message }
     ];
 
-    // Llamada inicial a GitHub Models con function calling
+    // Llamada inicial a GitHub Models con tools (formato nuevo)
     let response = await client.chat.completions.create({
       model: 'gpt-4o-mini', // Modelo High tier: 10 RPM, 50 RPD
       messages: messages,
-      functions: FUNCTIONS, // Funciones disponibles
-      function_call: 'auto', // El modelo decide cuándo llamar funciones
+      tools: TOOLS, // Tools en vez de functions
+      tool_choice: 'auto', // El modelo decide cuándo llamar tools
       temperature: 0.7,
       max_tokens: 800, // Aumentado para respuestas con ROI
       top_p: 0.9
@@ -170,21 +173,22 @@ async function handleChat(req, res) {
     let assistantMessage = response.choices[0].message;
     let totalUsage = response.usage;
 
-    // Si el LLM quiere llamar a una función
-    if (assistantMessage.function_call) {
-      const functionName = assistantMessage.function_call.name;
-      const functionArgs = JSON.parse(assistantMessage.function_call.arguments);
+    // Si el LLM quiere llamar a un tool
+    if (assistantMessage.tool_calls && assistantMessage.tool_calls.length > 0) {
+      const toolCall = assistantMessage.tool_calls[0];
+      const functionName = toolCall.function.name;
+      const functionArgs = JSON.parse(toolCall.function.arguments);
       
-      console.log(`🔧 LLM llamando función: ${functionName}`, functionArgs);
+      console.log(`🔧 LLM llamando tool: ${functionName}`, functionArgs);
       
       // Ejecutar la función
       const functionResult = executeFunctionCall(functionName, functionArgs);
       
-      // Agregar el resultado de la función a la conversación
-      messages.push(assistantMessage); // Mensaje del assistant con function_call
+      // Agregar el resultado del tool a la conversación
+      messages.push(assistantMessage); // Mensaje del assistant con tool_calls
       messages.push({
-        role: 'function',
-        name: functionName,
+        role: 'tool',
+        tool_call_id: toolCall.id,
         content: functionResult
       });
       
@@ -210,7 +214,7 @@ async function handleChat(req, res) {
     return res.json({
       message: assistantMessage.content,
       model: 'gpt-4o-mini',
-      functionCalled: !!assistantMessage.function_call,
+      toolCalled: !!(assistantMessage.tool_calls && assistantMessage.tool_calls.length > 0),
       usage: {
         promptTokens: totalUsage.prompt_tokens,
         completionTokens: totalUsage.completion_tokens,
@@ -249,7 +253,7 @@ async function healthCheck(req, res) {
       chatEnabled: hasToken,
       model: 'gpt-4o-mini',
       provider: 'GitHub Models',
-      functionsAvailable: FUNCTIONS.map(f => f.name)
+      toolsAvailable: TOOLS.map(t => t.function.name)
     });
   } catch (error) {
     return res.status(500).json({ 
