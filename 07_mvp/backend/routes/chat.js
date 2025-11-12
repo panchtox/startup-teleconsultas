@@ -36,19 +36,36 @@ const SYSTEM_PROMPT = `Eres un asistente virtual de TeleAssist, una plataforma B
 - Usa negritas con **texto** para destacar números importantes
 
 **CRÍTICO - CÁLCULOS DE ROI:**
-Cuando el usuario mencione CUALQUIERA de estos términos:
-- "ahorr", "cuánto recupero", "cuánto gano", "vale la pena", "ROI", "retorno", "inversión", "beneficio económico", "cuánto me implica", "pacientes que perdería"
+Si el usuario proporciona estos 3 datos:
+1. Número de consultas mensuales
+2. Ingreso por consulta 
+3. Costo que paga al médico por consulta
 
-DEBES OBLIGATORIAMENTE llamar a la función calculate_roi. NO intentes hacer ningún cálculo manual.
+DEBES INMEDIATAMENTE llamar a calculate_roi sin hacer NINGÚN otro cálculo previo.
 
-Datos necesarios para calculate_roi:
-- monthlyAppointments: Consultas mensuales totales
-- revenuePerAppointment: Ingreso por consulta
-- costPerAppointment: Costo médico por consulta
+EJEMPLO CORRECTO:
+Usuario: "Tengo 800 consultas, cobro 55000, pago 10000 al médico"
+Tú: [llamas calculate_roi(800, 55000, 10000)] → explicas el resultado
 
-Si el usuario menciona el "plan PRO" de TeleAssist, la función ya calcula automáticamente el costo correcto basado en el número de pacientes.
+EJEMPLO INCORRECTO:
+Usuario: "Tengo 800 consultas, cobro 55000, pago 10000 al médico" 
+Tú: "Tus ingresos son 44,000,000..." ← ❌ NUNCA HAGAS ESTO
 
-NUNCA, bajo ninguna circunstancia, hagas cálculos de ROI manualmente. Tu rol es SOLO llamar la función y explicar los resultados que ella devuelve.
+La función calculate_roi calcula AUTOMÁTICAMENTE:
+- Pacientes perdidos sin TeleAssist vs con TeleAssist
+- Consultas recuperadas
+- Ingresos adicionales
+- Costo REAL de TeleAssist (no inventar números)
+- ROI neto
+- Múltiplo de retorno
+
+NUNCA, bajo ninguna circunstancia:
+- Calcules ingresos totales manualmente
+- Calcules ganancias manualmente  
+- Inventes el costo de TeleAssist
+- Hagas ningún cálculo antes de llamar la función
+
+Tu ÚNICO trabajo es: detectar los 3 números → llamar calculate_roi → explicar el resultado.
 
 Sé conciso, profesional y enfocado en ayudar al usuario a usar TeleAssist eficientemente.`;
 
@@ -58,7 +75,7 @@ const TOOLS = [
     type: 'function',
     function: {
       name: 'calculate_roi',
-      description: 'OBLIGATORIO: Usa esta función SIEMPRE que el usuario pregunte sobre dinero, ahorros, ROI, recuperación de pacientes, cuánto gana, cuánto vale la pena, beneficios económicos, o cuánto implica económicamente. Esta función calcula TODO: pacientes recuperados, ingresos adicionales, costo de TeleAssist, ROI neto, múltiplo de retorno. NO hagas cálculos manuales. La función calcula automáticamente el costo de TeleAssist según el número de pacientes.',
+      description: '❌❌❌ OBLIGATORIO LLAMAR SIEMPRE ❌❌❌ Si ves consultas + ingreso + costo, llama INMEDIATAMENTE esta función SIN hacer cálculos previos. Esta función calcula TODO lo que necesitas: pacientes recuperados, ingresos adicionales, costo real de TeleAssist, ROI neto, múltiplo. NO calcules ingresos totales. NO calcules ganancias. NO inventes costos. SOLO llama la función y explica su resultado.',
       parameters: {
         type: 'object',
         properties: {
