@@ -35,13 +35,20 @@ const SYSTEM_PROMPT = `Eres un asistente virtual de TeleAssist, una plataforma B
 - Usa saltos de línea y bullets para claridad
 - Usa negritas con **texto** para destacar números importantes
 
-**IMPORTANTE SOBRE CÁLCULOS DE ROI:**
-Cuando el usuario pregunte sobre ahorros económicos, ROI, o cuánto dinero puede ahorrar, DEBES usar la función calculate_roi con los datos que el usuario proporcione o preguntar por los datos faltantes:
-- Número de consultas mensuales
-- Ingreso que recibe por consulta
-- Costo que paga al médico por consulta
+**CRÍTICO - CÁLCULOS DE ROI:**
+Cuando el usuario mencione CUALQUIERA de estos términos:
+- "ahorr", "cuánto recupero", "cuánto gano", "vale la pena", "ROI", "retorno", "inversión", "beneficio económico", "cuánto me implica", "pacientes que perdería"
 
-NUNCA intentes hacer estos cálculos manualmente. SIEMPRE usa la función calculate_roi que te dará resultados precisos y confiables.
+DEBES OBLIGATORIAMENTE llamar a la función calculate_roi. NO intentes hacer ningún cálculo manual.
+
+Datos necesarios para calculate_roi:
+- monthlyAppointments: Consultas mensuales totales
+- revenuePerAppointment: Ingreso por consulta
+- costPerAppointment: Costo médico por consulta
+
+Si el usuario menciona el "plan PRO" de TeleAssist, la función ya calcula automáticamente el costo correcto basado en el número de pacientes.
+
+NUNCA, bajo ninguna circunstancia, hagas cálculos de ROI manualmente. Tu rol es SOLO llamar la función y explicar los resultados que ella devuelve.
 
 Sé conciso, profesional y enfocado en ayudar al usuario a usar TeleAssist eficientemente.`;
 
@@ -49,7 +56,7 @@ Sé conciso, profesional y enfocado en ayudar al usuario a usar TeleAssist efici
 const FUNCTIONS = [
   {
     name: 'calculate_roi',
-    description: 'Calcula el ROI preciso y ahorro económico al usar TeleAssist. Usa esta función SIEMPRE que el usuario pregunte sobre ahorros, ROI, beneficios económicos o cuánto dinero puede ganar/ahorrar. Devuelve cálculos detallados incluyendo ahorro mensual, anual, ROI neto, y periodo de recuperación.',
+    description: 'OBLIGATORIO: Usa esta función SIEMPRE que el usuario pregunte sobre dinero, ahorros, ROI, recuperación de pacientes, cuánto gana, cuánto vale la pena, beneficios económicos, o cuánto implica económicamente. Esta función calcula TODO: pacientes recuperados, ingresos adicionales, costo de TeleAssist, ROI neto, múltiplo de retorno. NO hagas cálculos manuales. La función calcula automáticamente el costo de TeleAssist según el número de pacientes.',
     parameters: {
       type: 'object',
       properties: {
