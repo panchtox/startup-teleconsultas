@@ -50,18 +50,23 @@ export function Hero() {
             <div className="flex flex-col items-center">
               <div className="flex items-center text-3xl font-bold text-primary-600">
                 <Calendar className="mr-2 h-8 w-8" />
-                +156
+                ~150
               </div>
-              <p className="mt-2 text-sm text-gray-600">Horas médicas recuperadas/mes</p>
+              <p className="mt-2 text-sm text-gray-600">Horas médicas recuperadas/mes*</p>
             </div>
             
             <div className="flex flex-col items-center">
               <div className="text-3xl font-bold text-primary-600">
-                $72K
+                Hasta $72K
               </div>
-              <p className="mt-2 text-sm text-gray-600">Ahorro anual por médico</p>
+              <p className="mt-2 text-sm text-gray-600">Ahorro anual estimado*</p>
             </div>
           </div>
+          
+          {/* Disclaimer */}
+          <p className="mt-8 text-xs text-gray-500 italic">
+            * Cifras aproximadas basadas en clínicas medianas con 10+ médicos y 33% de ausentismo inicial
+          </p>
         </div>
       </div>
       
