@@ -31,7 +31,7 @@ export function Hero() {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-lg">
-              <Link to="/login">
+              <Link to="/dashboard">
                 Ver Demo en Vivo
               </Link>
             </Button>

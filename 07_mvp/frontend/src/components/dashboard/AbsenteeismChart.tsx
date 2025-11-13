@@ -21,7 +21,7 @@ export function AbsenteeismChart({ data }: AbsenteeismChartProps) {
       <CardHeader>
         <CardTitle>Evolución del Ausentismo</CardTitle>
         <CardDescription>
-          Comparación del ausentismo antes y después de implementar MedAssist
+          Comparación del ausentismo antes y después de implementar TeleAssist
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -62,7 +62,7 @@ export function AbsenteeismChart({ data }: AbsenteeismChartProps) {
               dataKey="beforeSystem"
               stroke="#ef4444"
               strokeWidth={2}
-              name="Sin MedAssist"
+              name="Sin TeleAssist"
               dot={{ fill: '#ef4444', r: 4 }}
               activeDot={{ r: 6 }}
             />
@@ -71,7 +71,7 @@ export function AbsenteeismChart({ data }: AbsenteeismChartProps) {
               dataKey="withSystem"
               stroke="#16a34a"
               strokeWidth={2}
-              name="Con MedAssist"
+              name="Con TeleAssist"
               dot={{ fill: '#16a34a', r: 4 }}
               activeDot={{ r: 6 }}
             />
