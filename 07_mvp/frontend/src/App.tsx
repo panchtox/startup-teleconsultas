@@ -30,7 +30,6 @@ function App() {
         <Route path="/landing" element={<Landing />} />
         
         {/* Protected routes with DashboardLayout */}
-        <Route path="/login" element={<DashboardLayout><DashboardPage /></DashboardLayout>} />
         <Route path="/dashboard" element={<DashboardLayout><DashboardPage /></DashboardLayout>} />
         <Route path="/patients" element={<DashboardLayout><PatientsPage /></DashboardLayout>} />
         <Route path="/patients/:id" element={<DashboardLayout><PatientProfilePage /></DashboardLayout>} />

@@ -34,7 +34,7 @@ export function Landing() {
           </div>
           <div className="flex flex-1 justify-end gap-4">
             <Button asChild variant="ghost">
-              <Link to="/login">Ingresar</Link>
+              <Link to="/dashboard">Ingresar</Link>
             </Button>
             <Button asChild>
               <a href="#demo">Solicitar Demo</a>

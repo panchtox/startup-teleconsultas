@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import {
   Users,
   Calendar,
@@ -109,9 +110,11 @@ export default function DashboardPage() {
             Gestiona y visualiza el scoring de tus pacientes para reducir aún
             más el ausentismo
           </p>
-          <button className="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">
-            Ver Detalles
-          </button>
+          <Link to="/reputation">
+            <button className="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">
+              Ver Detalles
+            </button>
+          </Link>
         </div>
 
         <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-lg text-white">
@@ -119,9 +122,11 @@ export default function DashboardPage() {
           <p className="text-green-100 mb-4">
             Accede a análisis detallados y exporta datos para tu equipo
           </p>
-          <button className="bg-white text-green-600 px-4 py-2 rounded-lg font-medium hover:bg-green-50 transition-colors">
-            Generar Reporte
-          </button>
+          <Link to="/reports">
+            <button className="bg-white text-green-600 px-4 py-2 rounded-lg font-medium hover:bg-green-50 transition-colors">
+              Generar Reporte
+            </button>
+          </Link>
         </div>
       </div>
     </div>

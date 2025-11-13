@@ -1,0 +1,93 @@
+digraph TeleAssist_Architecture {
+    // Graph settings
+    rankdir=TB;
+    nodesep=0.8;
+    ranksep=1.2;
+    bgcolor="white";
+    fontname="Arial";
+    fontsize=14;
+    
+    // Node styles
+    node [shape=box, style="rounded,filled", fontname="Arial", fontsize=12];
+    
+    // Subgraph: Equipo de Desarrollo (6 máquinas locales)
+    subgraph cluster_team {
+        label="👥 Equipo de Desarrollo";
+        style=dashed;
+        color="#2563eb";
+        fontsize=14;
+        fontcolor="#2563eb";
+        bgcolor="#eff6ff";
+        
+        dev1 [label="💻 Dev 1\nLocal Machine", fillcolor="#dbeafe", color="#2563eb"];
+        dev2 [label="💻 Dev 2\nLocal Machine", fillcolor="#dbeafe", color="#2563eb"];
+        dev3 [label="💻 Dev 3\nLocal Machine", fillcolor="#dbeafe", color="#2563eb"];
+        dev4 [label="💻 Dev 4\nLocal Machine", fillcolor="#dbeafe", color="#2563eb"];
+        dev5 [label="💻 Dev 5\nLocal Machine", fillcolor="#dbeafe", color="#2563eb"];
+        dev6 [label="💻 Dev 6\nLocal Machine", fillcolor="#dbeafe", color="#2563eb"];
+    }
+    
+    // GitHub Services
+    subgraph cluster_github {
+        label="🐙 GitHub";
+        style=filled;
+        color="#000000";
+        fontsize=14;
+        fontcolor="#000000";
+        bgcolor="#f6f8fa";
+        
+        github_repo [label="📦 GitHub Repository\nVersion Control\n(Frontend + Backend)", fillcolor="#ffffff", color="#000000"];
+        github_models [label="🤖 GitHub Models\nLLM API\n(GPT-4o / Llama 3.1)", fillcolor="#ffffff", color="#000000"];
+    }
+    
+    // Render (Backend)
+    render [label="🔧 Render\nBackend Hosting\n(Node.js + Express)\n/api/chat", shape=box, style="rounded,filled", fillcolor="#46e3b7", color="#00a67d", fontsize=12];
+    
+    // Vercel (Frontend)
+    vercel [label="⚡ Vercel\nFrontend Hosting\n(React + TypeScript)\nteleassist.vercel.app", shape=box, style="rounded,filled", fillcolor="#000000", fontcolor="#ffffff", fontsize=12];
+    
+    // End Users
+    users [label="👤 Usuarios Finales\n(Médicos, Pacientes, Admins)", shape=ellipse, fillcolor="#22c55e", color="#16a34a", fontcolor="#ffffff", fontsize=12];
+    
+    // Connections: Dev Team → GitHub Repo
+    dev1 -> github_repo [label="git push", fontsize=10, color="#2563eb"];
+    dev2 -> github_repo [label="git push", fontsize=10, color="#2563eb"];
+    dev3 -> github_repo [label="git push", fontsize=10, color="#2563eb"];
+    dev4 -> github_repo [label="git push", fontsize=10, color="#2563eb"];
+    dev5 -> github_repo [label="git push", fontsize=10, color="#2563eb"];
+    dev6 -> github_repo [label="git push", fontsize=10, color="#2563eb"];
+    
+    // GitHub Repo → Render (Backend Deploy)
+    github_repo -> render [label="Auto Deploy\nBackend", fontsize=10, color="#00a67d", style=bold];
+    
+    // GitHub Repo → Vercel (Frontend Deploy)
+    github_repo -> vercel [label="Auto Deploy\nFrontend", fontsize=10, color="#000000", style=bold];
+    
+    // Render → GitHub Models (LLM API calls)
+    render -> github_models [label="POST /chat/completions\nLLM Requests", fontsize=10, color="#f97316", style=dashed];
+    
+    // Vercel → Render (Chat API)
+    vercel -> render [label="POST /api/chat\nUser Messages", fontsize=10, color="#3b82f6"];
+    
+    // Users → Vercel
+    users -> vercel [label="HTTPS\nteleassist.vercel.app", fontsize=10, color="#22c55e", style=bold];
+    
+    // Render → Vercel (API Response)
+    render -> vercel [label="JSON Response\nLLM Answer", fontsize=10, color="#3b82f6", style=dashed];
+    
+    // Legend
+    subgraph cluster_legend {
+        label="📖 Leyenda";
+        style=filled;
+        color="#6b7280";
+        fontsize=11;
+        fontcolor="#6b7280";
+        bgcolor="#f9fafb";
+        
+        legend_dev [label="Desarrollo Local", fillcolor="#dbeafe", color="#2563eb", fontsize=10];
+        legend_git [label="Control de Versiones", fillcolor="#f6f8fa", color="#000000", fontsize=10];
+        legend_backend [label="Backend (API)", fillcolor="#46e3b7", color="#00a67d", fontsize=10];
+        legend_frontend [label="Frontend (UI)", fillcolor="#000000", fontcolor="#ffffff", fontsize=10];
+        legend_ai [label="AI/LLM Services", fillcolor="#ffffff", color="#f97316", fontsize=10];
+    }
+}

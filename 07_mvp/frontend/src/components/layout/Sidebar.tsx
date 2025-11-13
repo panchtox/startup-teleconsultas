@@ -89,15 +89,15 @@ export function Sidebar() {
       >
         {/* Logo y botón cerrar */}
         <div className="flex h-16 items-center justify-between border-b border-gray-200 px-6">
-          <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600">
               <span className="text-lg font-bold text-white">T</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-semibold text-gray-900">TeleConsultas</span>
+              <span className="text-sm font-semibold text-gray-900">TeleAssist</span>
               <span className="text-xs text-gray-500">Sistema de gestión</span>
             </div>
-          </div>
+          </Link>
 
           {/* Botón cerrar para mobile */}
           {isMobile && (
